@@ -33,12 +33,12 @@ public class MainController implements Initializable {
 	@FXML
 	private void onBtOkAction() throws ParseException {
 		
-		try(BufferedReader br = new BufferedReader(new FileReader("task.csv"));) {
+		try(BufferedReader br = new BufferedReader(new FileReader("task.csv"));) { //Consertar isso, lendo direto da raiz do programa
 
 			String line;
 			
-			while (br.readLine() != null) {
-				line = (br.readLine());
+			while ((line = br.readLine()) != null) {
+				
 				String[] data = (line.split(","));
 
 				String tNum = data[0].toString().replace("\"", "");
@@ -75,7 +75,13 @@ public class MainController implements Initializable {
 			
 		} catch (IOException e) {
 			
-			e.printStackTrace();
+		//	System.out.println("Enter file path: ");
+		//	String sourceFileStr = sc.nextLine();
+
+		//	File sourceFile = new File(sourceFileStr);
+		//	String sourceFolderStr = sourceFile.getParent();
+			
+		//	boolean success = new File(sourceFolderStr + "\\out").mkdir();
 		}
 	}
 

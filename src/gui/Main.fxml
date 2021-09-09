@@ -12,7 +12,7 @@
       <TextField fx:id="txtPathFile" alignment="BOTTOM_CENTER" layoutX="33.0" layoutY="56.0" prefHeight="25.0" prefWidth="345.0" promptText="Para arquivo na raiz, digite apenas o nome " />
       <Button fx:id="btOk" layoutX="401.0" layoutY="54.0" mnemonicParsing="false" onAction="#onBtOkAction" prefHeight="29.0" prefWidth="134.0" text="Ler arquivo CSV" />
       <TextField fx:id="txtExcludeFile" alignment="BOTTOM_CENTER" layoutX="33.0" layoutY="93.0" prefHeight="25.0" prefWidth="345.0" promptText="Lista de tickets a serem excluídos do relatório de backlog" />
-      <Button fx:id="btExclude" layoutX="401.0" layoutY="91.0" mnemonicParsing="false" onAction="#onBtOkAction" prefHeight="29.0" prefWidth="134.0" text="Arquivos a excluir" />
+      <Button fx:id="btExclude" layoutX="401.0" layoutY="91.0" mnemonicParsing="false" onAction="#onBtExcludeAction" prefHeight="29.0" prefWidth="134.0" text="Arquivos a excluir" />
       <Label prefHeight="30.0" prefWidth="237.0" text="Backlogger - gerador de reports">
          <padding>
             <Insets left="10.0" top="10.0" />
@@ -21,5 +21,6 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
+      <Button fx:id="btGenerate" layoutX="211.0" layoutY="143.0" mnemonicParsing="false" onAction="#onBtGenerateAction" prefHeight="30.0" prefWidth="125.0" text="Gerar report" />
    </children>
 </AnchorPane>

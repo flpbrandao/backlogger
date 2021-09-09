@@ -10,8 +10,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import entities.Ticket;
 import javafx.fxml.FXML;
@@ -21,36 +23,99 @@ import javafx.scene.control.TextField;
 
 public class MainController implements Initializable {
 
+	Boolean buttonClicked, buttonClicked2 = false;
 	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 	SimpleDateFormat todayDate = new SimpleDateFormat("dd-MM-yyyy");
 	List<Ticket> ticketList = new ArrayList<>();
+	List<Ticket> ticketExcludedList = new ArrayList<>();
 	Ticket ticket;
 	String todayDateString = todayDate.format(new Date());
-	String path = ".\\data\\" + todayDateString;
+	String outputPath = ".\\data\\" + todayDateString;
 	
+
 	@FXML
 	private Button btOk;
-	
+
 	@FXML
 	private Button btExclude;
-	
+
+	@FXML
+	private Button btGenerate;
+
 	@FXML
 	private TextField txtPathFile;
-	
+
 	@FXML
 	private TextField txtExcludeFile;
 
 	@FXML
+	private void onBtGenerateAction() {
+				
+
+	}
+	
+
+	public void compareLists() {
+		Set<String> s = new HashSet<>();
+		for (Ticket t : ticketList) {
+			if (s.add(t.getNumber()) == false) {
+				System.out.println("Entry " + t + " present on first list");
+			} else {
+				System.out.println("Entry " + t + " not present. Adding to hashset");
+			}
+		}
+
+	}
+
+	@FXML
+	private void onBtExcludeAction() {
+		String inputPath = txtExcludeFile.getText();
+		
+			ticketList = readFromFile(inputPath);
+			createFile(ticketList, outputPath);
+			buttonClicked2 = true;
+			
+			
+			}
+				
+	@FXML
 	private void onBtOkAction() throws ParseException {
+		String inputPath = txtPathFile.getText();
 		
-		
-		
-		try(BufferedReader br = new BufferedReader(new FileReader(txtPathFile.getText()));) { //Consertar isso, lendo direto da raiz do programa
+		ticketList = readFromFile(inputPath);
+		createFile(ticketList, outputPath);
+		buttonClicked = true;
+
+	}
+
+	private void createFile(List<Ticket> ticketList, String outputPath) {
+
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter(outputPath))) {
+			for (Ticket t : ticketList) {
+				bw.write(t.getNumber() + "," + t.getAssigned_to() + "," + t.getAssignment_group() + "," + t.getStatus()
+						+ "," + t.getCreatedOn() + "," + t.getCreatedOn());
+				bw.newLine();
+			}
+
+		} catch (IOException e) {
+
+			// System.out.println("Enter file path: ");
+			// String sourceFileStr = sc.nextLine();
+
+			// File sourceFile = new File(sourceFileStr);
+			// String sourceFolderStr = sourceFile.getParent();
+
+			// boolean success = new File(sourceFolderStr + "\\out").mkdir();
+		}
+	}
+
+	public List<Ticket> readFromFile(String inputPath) {
+		try (BufferedReader br = new BufferedReader(new FileReader(inputPath));) {
 
 			String line;
-			
+
 			while ((line = br.readLine()) != null) {
-				
+
 				String[] data = (line.split(","));
 
 				String tNum = data[0].toString().replace("\"", "");
@@ -63,38 +128,17 @@ public class MainController implements Initializable {
 				Ticket ticket = new Ticket(tNum, assignedTo, assignment_group, status, created, updated);
 				System.out.println(ticket);
 				ticketList.add(ticket);
-			
+				
 
 			}
-
-		} catch (IOException e) {
-			System.out.println("File not found!");
-		}
-		finally {
-			createFile(ticketList, path);
-		}
-
-	}
-
-	private void createFile(List<Ticket> ticketList, String path) {
-		
-		try (BufferedWriter bw = new BufferedWriter(new FileWriter(path))) {
-			for (Ticket t : ticketList) {
-				bw.write(t.getNumber()+","+ t.getAssigned_to() +"," + t.getAssignment_group() +"," + t.getStatus() + "," + 
-			t.getCreatedOn() +"," + t.getCreatedOn());
-				bw.newLine();
-			}
 			
-		} catch (IOException e) {
+		} catch (IOException | ParseException e) {
 			
-		//	System.out.println("Enter file path: ");
-		//	String sourceFileStr = sc.nextLine();
-
-		//	File sourceFile = new File(sourceFileStr);
-		//	String sourceFolderStr = sourceFile.getParent();
+			e.printStackTrace();
+		} finally {
 			
-		//	boolean success = new File(sourceFolderStr + "\\out").mkdir();
 		}
+		return ticketList;
 	}
 
 	@Override

@@ -17,6 +17,7 @@ import entities.Ticket;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 
 public class MainController implements Initializable {
 
@@ -29,11 +30,22 @@ public class MainController implements Initializable {
 	
 	@FXML
 	private Button btOk;
+	
+	@FXML
+	private Button btExclude;
+	
+	@FXML
+	private TextField txtPathFile;
+	
+	@FXML
+	private TextField txtExcludeFile;
 
 	@FXML
 	private void onBtOkAction() throws ParseException {
 		
-		try(BufferedReader br = new BufferedReader(new FileReader("task.csv"));) { //Consertar isso, lendo direto da raiz do programa
+		
+		
+		try(BufferedReader br = new BufferedReader(new FileReader(txtPathFile.getText()));) { //Consertar isso, lendo direto da raiz do programa
 
 			String line;
 			

@@ -50,7 +50,16 @@ public class MainController implements Initializable {
 
 	@FXML
 	private void onBtGenerateAction() {
-				
+		txtExcludeFile.setDisable(true);
+		txtPathFile.setDisable(true);
+		btExclude.setDisable(true);
+		btOk.setDisable(true);
+		int i=0;
+				for (Ticket t : ticketList) {
+					
+					System.out.println (i + " - " + t.getNumber());
+					i++;
+				}
 
 	}
 	

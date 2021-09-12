@@ -29,6 +29,7 @@ public class MainController implements Initializable {
 	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 	SimpleDateFormat todayDate = new SimpleDateFormat("dd-MM-yyyy");
 	List<Ticket> ticketList = new ArrayList<>();
+	List<Ticket> finalList = new ArrayList<>();
 	List<Ticket> ticketExcludedList = new ArrayList<>();
 	Ticket ticket;
 	String todayDateString = todayDate.format(new Date());
@@ -57,35 +58,45 @@ public class MainController implements Initializable {
 			txtPathFile.setDisable(true);
 			btExclude.setDisable(true);
 			btOk.setDisable(true);
-			//int i = 0;
-		//	for (Ticket t : ticketList) {
+			// int i = 0;
+			// for (Ticket t : ticketList) {
 
-		//		System.out.println(i + " - " + t.getNumber());
-		//	i++;
-		//	}
+			// System.out.println(i + " - " + t.getNumber());
+			// i++;
+			// }
 			compareLists(ticketList);
-		}
-		else {
+		} else {
 			txtExcludeFile.setDisable(false);
 			txtPathFile.setDisable(false);
 		}
 	}
 
 	public void compareLists(List<Ticket> ticketList) {
+	
+
 		Set<String> s = new HashSet<>();
-		int i=0;
+		int i=0,z=0;
 		for (Ticket t : ticketList) {
 			
 			if (s.add(t.getNumber()) == false) {
 				System.out.println("Entry " + i + " - " + t.getNumber() + " present on first list");
+			
 				
 			} else {
 				System.out.println("Entry " + i + " - " +  t.getNumber() + " not present. Adding to hashset");
-				//finalList.add(t);
+				finalList.add(t);
 				
 				
 			}
 			i++;
+		}
+
+	
+
+		for (Ticket v : finalList) {
+
+			System.out.println("NOT REPEATED " + z + " - " + v.getNumber());
+			z++;
 		}
 
 	}
@@ -97,28 +108,26 @@ public class MainController implements Initializable {
 		ticketList = readFromFile(inputPath);
 		createFile(ticketList, outputPath);
 		buttonClicked2 = true;
+		txtExcludeFile.setDisable(true);
 
 	}
 
 	@FXML
 	private void onBtOkAction() throws ParseException {
-		
+
 		setValidation();
 		if (validate == true) {
 			String inputPath = txtPathFile.getText();
 			ticketList = readFromFile(inputPath);
 			createFile(ticketList, outputPath);
 			buttonClicked = true;
+			txtPathFile.setDisable(true);
 
-		}
-		else {
-			txtExcludeFile.setDisable(false);
+		} else {
 			txtPathFile.setDisable(false);
-		}
-		
-		
 
-		
+		}
+
 	}
 
 	private void createFile(List<Ticket> ticketList, String outputPath) {
@@ -143,7 +152,7 @@ public class MainController implements Initializable {
 	}
 
 	public List<Ticket> readFromFile(String inputPath) {
-		
+
 		try (BufferedReader br = new BufferedReader(new FileReader(inputPath));) {
 
 			String line;
@@ -184,11 +193,9 @@ public class MainController implements Initializable {
 			Alerts.showAlert("Missing fields", todayDateString, "Você precisa especificar o arquivo de backlog!",
 					AlertType.WARNING);
 			return (validate = false);
-		}
-		else {
+		} else {
 			return (validate = true);
 		}
-		
 
 	}
 

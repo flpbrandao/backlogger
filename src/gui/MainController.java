@@ -16,14 +16,16 @@ import java.util.ResourceBundle;
 import java.util.Set;
 
 import entities.Ticket;
+import gui.util.Alerts;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
 public class MainController implements Initializable {
 
-	Boolean buttonClicked, buttonClicked2 = false;
+	Boolean buttonClicked, buttonClicked2, validate = false;
 	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 	SimpleDateFormat todayDate = new SimpleDateFormat("dd-MM-yyyy");
 	List<Ticket> ticketList = new ArrayList<>();
@@ -31,7 +33,6 @@ public class MainController implements Initializable {
 	Ticket ticket;
 	String todayDateString = todayDate.format(new Date());
 	String outputPath = ".\\data\\" + todayDateString;
-	
 
 	@FXML
 	private Button btOk;
@@ -50,28 +51,41 @@ public class MainController implements Initializable {
 
 	@FXML
 	private void onBtGenerateAction() {
-		txtExcludeFile.setDisable(true);
-		txtPathFile.setDisable(true);
-		btExclude.setDisable(true);
-		btOk.setDisable(true);
-		int i=0;
-				for (Ticket t : ticketList) {
-					
-					System.out.println (i + " - " + t.getNumber());
-					i++;
-				}
+		setValidation();
+		if (validate == true) {
+			txtExcludeFile.setDisable(true);
+			txtPathFile.setDisable(true);
+			btExclude.setDisable(true);
+			btOk.setDisable(true);
+			//int i = 0;
+		//	for (Ticket t : ticketList) {
 
+		//		System.out.println(i + " - " + t.getNumber());
+		//	i++;
+		//	}
+			compareLists(ticketList);
+		}
+		else {
+			txtExcludeFile.setDisable(false);
+			txtPathFile.setDisable(false);
+		}
 	}
-	
 
-	public void compareLists() {
+	public void compareLists(List<Ticket> ticketList) {
 		Set<String> s = new HashSet<>();
+		int i=0;
 		for (Ticket t : ticketList) {
+			
 			if (s.add(t.getNumber()) == false) {
-				System.out.println("Entry " + t + " present on first list");
+				System.out.println("Entry " + i + " - " + t.getNumber() + " present on first list");
+				
 			} else {
-				System.out.println("Entry " + t + " not present. Adding to hashset");
+				System.out.println("Entry " + i + " - " +  t.getNumber() + " not present. Adding to hashset");
+				//finalList.add(t);
+				
+				
 			}
+			i++;
 		}
 
 	}
@@ -79,22 +93,32 @@ public class MainController implements Initializable {
 	@FXML
 	private void onBtExcludeAction() {
 		String inputPath = txtExcludeFile.getText();
-		
-			ticketList = readFromFile(inputPath);
-			createFile(ticketList, outputPath);
-			buttonClicked2 = true;
-			
-			
-			}
-				
-	@FXML
-	private void onBtOkAction() throws ParseException {
-		String inputPath = txtPathFile.getText();
-		
+
 		ticketList = readFromFile(inputPath);
 		createFile(ticketList, outputPath);
-		buttonClicked = true;
+		buttonClicked2 = true;
 
+	}
+
+	@FXML
+	private void onBtOkAction() throws ParseException {
+		
+		setValidation();
+		if (validate == true) {
+			String inputPath = txtPathFile.getText();
+			ticketList = readFromFile(inputPath);
+			createFile(ticketList, outputPath);
+			buttonClicked = true;
+
+		}
+		else {
+			txtExcludeFile.setDisable(false);
+			txtPathFile.setDisable(false);
+		}
+		
+		
+
+		
 	}
 
 	private void createFile(List<Ticket> ticketList, String outputPath) {
@@ -119,6 +143,7 @@ public class MainController implements Initializable {
 	}
 
 	public List<Ticket> readFromFile(String inputPath) {
+		
 		try (BufferedReader br = new BufferedReader(new FileReader(inputPath));) {
 
 			String line;
@@ -137,21 +162,33 @@ public class MainController implements Initializable {
 				Ticket ticket = new Ticket(tNum, assignedTo, assignment_group, status, created, updated);
 				System.out.println(ticket);
 				ticketList.add(ticket);
-				
 
 			}
-			
+
 		} catch (IOException | ParseException e) {
-			
+
 			e.printStackTrace();
 		} finally {
-			
+
 		}
 		return ticketList;
 	}
 
 	@Override
 	public void initialize(URL url, ResourceBundle rg) {
+
+	}
+
+	public Boolean setValidation() {
+		if ((txtPathFile.getText() == "") || (txtPathFile.getText() == null)) {
+			Alerts.showAlert("Missing fields", todayDateString, "Você precisa especificar o arquivo de backlog!",
+					AlertType.WARNING);
+			return (validate = false);
+		}
+		else {
+			return (validate = true);
+		}
+		
 
 	}
 

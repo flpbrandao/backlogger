@@ -25,7 +25,7 @@ import javafx.scene.control.TextField;
 
 public class MainController implements Initializable {
 
-	Boolean buttonClicked, buttonClicked2, validate = false;
+	Boolean buttonClicked, buttonClicked2, validate, end = false;
 	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 	SimpleDateFormat todayDate = new SimpleDateFormat("dd-MM-yyyy");
 	List<Ticket> ticketList = new ArrayList<>();
@@ -58,20 +58,17 @@ public class MainController implements Initializable {
 			txtPathFile.setDisable(true);
 			btExclude.setDisable(true);
 			btOk.setDisable(true);
-			// int i = 0;
-			// for (Ticket t : ticketList) {
-
-			// System.out.println(i + " - " + t.getNumber());
-			// i++;
-			// }
-			compareLists(ticketList);
+			btGenerate.setDisable(true);
+			List<Ticket> defList = new ArrayList<>();
+			defList = compareLists(ticketList);
+			createFile(defList, outputPath, end=true);
 		} else {
 			txtExcludeFile.setDisable(false);
 			txtPathFile.setDisable(false);
 		}
 	}
 
-	public void compareLists(List<Ticket> ticketList) {
+	public List<Ticket> compareLists(List<Ticket> ticketList) {
 	
 
 		Set<String> s = new HashSet<>();
@@ -97,8 +94,9 @@ public class MainController implements Initializable {
 
 			System.out.println("NOT REPEATED " + z + " - " + v.getNumber());
 			z++;
+			
 		}
-
+		return finalList;
 	}
 
 	@FXML
@@ -106,7 +104,7 @@ public class MainController implements Initializable {
 		String inputPath = txtExcludeFile.getText();
 
 		ticketList = readFromFile(inputPath);
-		createFile(ticketList, outputPath);
+		createFile(ticketList, outputPath, end=false);
 		buttonClicked2 = true;
 		txtExcludeFile.setDisable(true);
 
@@ -119,7 +117,7 @@ public class MainController implements Initializable {
 		if (validate == true) {
 			String inputPath = txtPathFile.getText();
 			ticketList = readFromFile(inputPath);
-			createFile(ticketList, outputPath);
+			createFile(ticketList, outputPath, end=false);
 			buttonClicked = true;
 			txtPathFile.setDisable(true);
 
@@ -130,7 +128,12 @@ public class MainController implements Initializable {
 
 	}
 
-	private void createFile(List<Ticket> ticketList, String outputPath) {
+	
+
+	private void createFile(List<Ticket> ticketList, String outputPath, Boolean end) {
+		if (end==true) {
+			outputPath=outputPath+"-final";
+		}
 
 		try (BufferedWriter bw = new BufferedWriter(new FileWriter(outputPath))) {
 			for (Ticket t : ticketList) {

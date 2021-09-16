@@ -17,11 +17,17 @@ import java.util.Set;
 
 import entities.Ticket;
 import gui.util.Alerts;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 public class MainController implements Initializable {
 
@@ -34,7 +40,33 @@ public class MainController implements Initializable {
 	Ticket ticket;
 	String todayDateString = todayDate.format(new Date());
 	String outputPath = ".\\data\\" + todayDateString;
+	private ObservableList<Ticket> obsList;
 
+
+		@FXML
+		private TableView<Ticket> tableViewTicket;
+
+		@FXML
+		private TableColumn<Ticket, String> tableColumnNumber;
+
+		@FXML
+		private TableColumn<Ticket, Date> tableColumnAssignedTo;
+
+		@FXML
+		private TableColumn<Ticket, Date> tableColumnAssignmentGroup;
+		
+		@FXML
+		private TableColumn<Ticket, Date> tableColumnStatus;
+
+		@FXML
+		private TableColumn<Ticket, Date> tableColumnCreatedOn;
+		
+		@FXML
+		private TableColumn<Ticket, Date> tableColumnUpdatedOn;
+		
+		@FXML
+		private TableColumn<Ticket, Date> tableColumnCompleted;
+	
 	@FXML
 	private Button btOk;
 
@@ -61,6 +93,8 @@ public class MainController implements Initializable {
 			btGenerate.setDisable(true);
 			List<Ticket> defList = new ArrayList<>();
 			defList = compareLists(ticketList);
+			obsList = FXCollections.observableArrayList(defList);
+			tableViewTicket.setItems(obsList);
 			createFile(defList, outputPath, end=true);
 		} else {
 			txtExcludeFile.setDisable(false);
@@ -170,8 +204,9 @@ public class MainController implements Initializable {
 				String status = data[3].toString().replace("\"", "");
 				Date created = sdf.parse(data[4].toString().replace("\"", ""));
 				Date updated = sdf.parse(data[5].toString().replace("\"", ""));
+				CheckBox completed = new CheckBox();
 
-				Ticket ticket = new Ticket(tNum, assignedTo, assignment_group, status, created, updated);
+				Ticket ticket = new Ticket(tNum, assignedTo, assignment_group, status, created, updated, completed);
 				System.out.println(ticket);
 				ticketList.add(ticket);
 
@@ -188,7 +223,21 @@ public class MainController implements Initializable {
 
 	@Override
 	public void initialize(URL url, ResourceBundle rg) {
+		initializeTableView();
+	}
 
+	private void 		initializeTableView() {
+		
+		tableColumnNumber.setCellValueFactory(new PropertyValueFactory<>("number"));
+		tableColumnAssignedTo.setCellValueFactory(new PropertyValueFactory<>("assigned_to"));
+		tableColumnAssignmentGroup.setCellValueFactory(new PropertyValueFactory<>("assignment_group"));
+		tableColumnStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+		tableColumnCreatedOn.setCellValueFactory(new PropertyValueFactory<>("createdOn"));
+		tableColumnUpdatedOn.setCellValueFactory(new PropertyValueFactory<>("updatedOn"));
+		tableColumnCompleted.setCellValueFactory(new PropertyValueFactory<>("Completed"));
+		
+		//String number, String assigned_to, String assignment_group, String status, Date createdOn,
+		//Date updatedOn, CheckBox complete
 	}
 
 	public Boolean setValidation() {

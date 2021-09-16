@@ -1,12 +1,16 @@
 package entities;
 
+
 import java.util.Date;
+
+import javafx.scene.control.CheckBox;
 
 public class Ticket {
 
 	private String number, assigned_to, assignment_group, status;
 	private Date createdOn, updatedOn;
 	private Boolean closed;
+	private CheckBox completed;
 
 	public Ticket() {
 
@@ -20,6 +24,25 @@ public class Ticket {
 		this.status = status;
 		this.createdOn = createdOn;
 		this.updatedOn = updatedOn;
+	}
+	
+	public Ticket(String number, String assigned_to, String assignment_group, String status, Date createdOn,
+			Date updatedOn, CheckBox completed) {
+		this.number = number;
+		this.assigned_to = assigned_to;
+		this.assignment_group = assignment_group;
+		this.status = status;
+		this.createdOn = createdOn;
+		this.updatedOn = updatedOn;
+		this.completed = completed;
+	}
+
+	public CheckBox getCompleted() {
+		return completed;
+	}
+
+	public void setCompleted(CheckBox completed) {
+		this.completed = completed;
 	}
 
 	public String getStatus() {

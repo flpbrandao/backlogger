@@ -26,6 +26,11 @@ public class Ticket {
 		this.updatedOn = updatedOn;
 	}
 	
+	public Ticket(String number) {
+		this.number = number;
+	
+	}
+	
 	public Ticket(String number, String assigned_to, String assignment_group, String status, Date createdOn,
 			Date updatedOn, CheckBox completed) {
 		this.number = number;

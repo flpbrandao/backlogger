@@ -5,7 +5,6 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,25 +15,19 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-import application.Main;
 import entities.Ticket;
 import gui.util.Alerts;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.VBox;
 
 public class MainController implements Initializable {
 
@@ -50,44 +43,6 @@ public class MainController implements Initializable {
 	private ObservableList<Ticket> obsList;
 
 	
-	public synchronized void loadView(String absoluteName) { // Método recebendo a string com o caminho do FXML
-		try {
-
-			// Esses códigos manipulam diretamente a cena principal e o vbox principal da
-			// cena em tempo de execução:
-
-			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName)); // Inicializa loader de tela
-																						// padrão do java fx no caminho
-																						// especificado, onde será
-																						// criado o Vbox da tela about
-
-			VBox newVBox = loader.load(); // Cria o VBox da tela About, onde serão exibidas as operações feitas a seguir
-
-			Scene mainScene = Main.getMainScene(); // Pega a scene principal criada na classe principal para que seja
-													// exibido na mesma tela. Esse método estático precisa ser criado.
-													// Se der erro dizendo que a main scene está vazia, é porque não foi
-													// atribuída a varíavel mainscene criada à criação da tela.
-													// mainScene = new Scene(parent);
-
-			VBox mainVBox = (VBox) ((ScrollPane) mainScene.getRoot()).getContent(); // Pega o vbox principal (já
-																					// existente) dentro do
-																					// scrollpane principal, dentro da
-																					// scene principal. O content é o
-																					// conteudo XML dentro do arquivo
-																					// MsinView.xml
-			Node mainMenu = mainVBox.getChildren().get(0); // Pega o primeiro item dentro do VBox acima (nesse caso o
-															// Main Menu que precisa ser preservado).
-			mainVBox.getChildren().clear(); // Limpa o VBox principal
-			mainVBox.getChildren().add(mainMenu); // Adiciona ao VBOx principal o Main Menu obtido acima, que foi
-													// preservado na tela
-			mainVBox.getChildren().addAll(newVBox.getChildren()); // Adiciona o conteúdo do new vbox com os itens do
-																	// VBOx About e o painel acima
-
-		} catch (IOException e) {
-			Alerts.showAlert("IO Exception", null, e.getMessage(), AlertType.ERROR);
-			e.printStackTrace();
-		}
-	}
 
 	@FXML
 	private TableView<Ticket> tableViewTicket;
@@ -121,12 +76,21 @@ public class MainController implements Initializable {
 
 	@FXML
 	private Button btGenerate;
+	
+	@FXML
+	private Button btCompare;
+
 
 	@FXML
 	private TextField txtPathFile;
 
 	@FXML
 	private TextField txtExcludeFile;
+	
+	@FXML
+	private void onBtCompareAction() {
+		
+	}
 
 	@FXML
 	private void onBtGenerateAction() {
@@ -176,14 +140,19 @@ public class MainController implements Initializable {
 
 	@FXML
 	private void onBtExcludeAction() {
+		if (txtExcludeFile.getText()==null || txtExcludeFile.getText()=="") {
+			Alerts.showAlert("Um arquivo precisa ser especificado!", "Se você quer clicar aqui...", "Selecione o arquivo!", AlertType.ERROR);
+		}
+		else {
+		txtExcludeFile.setDisable(true);
 		String inputPath = txtExcludeFile.getText();
 	
 		ticketList = readFromRawTickets(inputPath);
 	
 		createFile(ticketList, outputPath, end = false);
 		buttonClicked2 = true;
-		txtExcludeFile.setDisable(true);
-
+		
+		}
 	}
 
 	@FXML
@@ -191,11 +160,12 @@ public class MainController implements Initializable {
 
 		setValidation();
 		if (validate == true) {
+			txtPathFile.setDisable(true);
 			String inputPath = txtPathFile.getText();
 			ticketList = readFromFile(inputPath);
 			createFile(ticketList, outputPath, end = false);
 			buttonClicked = true;
-			txtPathFile.setDisable(true);
+			
 
 		} else {
 			txtPathFile.setDisable(false);
@@ -214,6 +184,7 @@ public class MainController implements Initializable {
 				bw.write(t.getNumber() + "," + t.getAssigned_to() + "," + t.getAssignment_group() + "," + t.getStatus()
 						+ "," + t.getCreatedOn() + "," + t.getCreatedOn());
 				bw.newLine();
+				
 			}
 
 		} catch (IOException e) {
@@ -254,7 +225,10 @@ public class MainController implements Initializable {
 
 		} catch (IOException | ParseException e) {
 
-			e.printStackTrace();
+			Alerts.showAlert("Erro", "Arquivo não encontrado ou tipo incorreto :(", "Favor verificar o arquivo", AlertType.ERROR);
+			txtPathFile.setDisable(false);
+			txtPathFile.setText("");
+			btOk.setDisable(false);
 		} finally {
 
 		}
@@ -282,7 +256,11 @@ public class MainController implements Initializable {
 
 		} catch (IOException e) {
 
-			e.printStackTrace();
+			Alerts.showAlert("Erro", "Arquivo não encontrado ou tipo incorreto :(", "Favor verificar o arquivo", AlertType.ERROR);
+			txtExcludeFile.setDisable(false);
+			txtExcludeFile.setText("");
+			txtExcludeFile.clear();
+			btExclude.setDisable(false);
 		} finally {
 
 		}
@@ -311,7 +289,7 @@ public class MainController implements Initializable {
 
 	public Boolean setValidation() {
 		if ((txtPathFile.getText() == "") || (txtPathFile.getText() == null)) {
-			Alerts.showAlert("Missing fields", todayDateString, "Você precisa especificar o arquivo de backlog!",
+			Alerts.showAlert("Missing fields", "Rapaz, nada foi selecionado.", "Você precisa especificar o arquivo de backlog!",
 					AlertType.WARNING);
 			return (validate = false);
 		} else {

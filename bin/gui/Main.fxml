@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -11,13 +12,13 @@
 
 <AnchorPane prefHeight="625.0" prefWidth="568.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainController">
    <children>
-      <Label layoutX="233.0" layoutY="522.0" text="Outras opções:">
+      <TextField fx:id="txtPathFile" alignment="BOTTOM_CENTER" layoutX="34.0" layoutY="57.0" prefHeight="25.0" prefWidth="345.0" promptText="Arquivo princial e obrigatório." />
+      <Label layoutX="233.0" layoutY="522.0" text="Outras ações:">
          <font>
             <Font name="Calibri" size="14.0" />
          </font></Label>
-      <TextField fx:id="txtPathFile" alignment="BOTTOM_CENTER" layoutX="34.0" layoutY="57.0" prefHeight="25.0" prefWidth="345.0" promptText="Para arquivo na raiz, digite apenas o nome " />
       <Button fx:id="btOk" layoutX="401.0" layoutY="55.0" mnemonicParsing="false" onAction="#onBtOkAction" prefHeight="29.0" prefWidth="134.0" text="Ler arquivo CSV" />
-      <TextField fx:id="txtExcludeFile" alignment="BOTTOM_CENTER" layoutX="34.0" layoutY="102.0" prefHeight="25.0" prefWidth="345.0" promptText="Lista de tickets a serem excluídos do relatório de backlog" />
+      <TextField fx:id="txtExcludeFile" alignment="BOTTOM_CENTER" layoutX="34.0" layoutY="102.0" prefHeight="25.0" prefWidth="345.0" promptText="Lista de tickets a serem excluídos do relatório de backlog." />
       <Button fx:id="btExclude" layoutX="401.0" layoutY="100.0" mnemonicParsing="false" onAction="#onBtExcludeAction" prefHeight="29.0" prefWidth="134.0" text="Arquivos a excluir" />
       <Button fx:id="btGenerate" layoutX="213.0" layoutY="146.0" mnemonicParsing="false" onAction="#onBtGenerateAction" prefHeight="30.0" prefWidth="125.0" text="Gerar report" />
       <TableView fx:id="tableViewTicket" layoutX="9.0" layoutY="186.0" prefHeight="322.0" prefWidth="552.0">
@@ -32,6 +33,14 @@
         </columns>
       </TableView>
       <Line endX="15.0" endY="508.0" startX="560.0" startY="508.0" />
-      <Button fx:id="btCompare" layoutX="34.0" layoutY="554.0" mnemonicParsing="false" onAction="#onBtCompareAction" prefHeight="30.0" prefWidth="113.0" text="Comparar Reports" />
+      <Button fx:id="btCompare" layoutX="15.0" layoutY="555.0" mnemonicParsing="false" onAction="#onBtCompareAction" prefHeight="30.0" prefWidth="113.0" text="Comparar Reports" />
+      <TextField fx:id="txtCurrentDate" layoutX="189.0" layoutY="557.0" />
+      <TextField fx:id="txtInitDate" layoutX="405.0" layoutY="557.0" />
+      <Label layoutX="145.0" layoutY="561.0" text="Atual:" />
+      <Label layoutX="360.0" layoutY="561.0" text="Antigo:">
+         <padding>
+            <Insets right="5.0" />
+         </padding>
+      </Label>
    </children>
 </AnchorPane>

@@ -1,11 +1,14 @@
 package entities;
 
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javafx.scene.control.CheckBox;
 
 public class Ticket {
+	
+	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
 	private String number, assigned_to, assignment_group, status;
 	private Date createdOn, updatedOn;
@@ -15,6 +18,16 @@ public class Ticket {
 	public Ticket() {
 
 	}
+	
+	
+
+	public Ticket(String number, Date createdOn, Date updatedOn) {
+		this.number = number;
+		this.createdOn = createdOn;
+		this.updatedOn = updatedOn;
+	}
+
+
 
 	public Ticket(String number, String assigned_to, String assignment_group, String status, Date createdOn,
 			Date updatedOn) {

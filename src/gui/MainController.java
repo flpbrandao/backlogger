@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -41,8 +42,6 @@ public class MainController implements Initializable {
 	String todayDateString = todayDate.format(new Date());
 	String outputPath = ".\\data\\" + todayDateString;
 	private ObservableList<Ticket> obsList;
-
-	
 
 	@FXML
 	private TableView<Ticket> tableViewTicket;
@@ -76,20 +75,45 @@ public class MainController implements Initializable {
 
 	@FXML
 	private Button btGenerate;
-	
+
 	@FXML
 	private Button btCompare;
-
 
 	@FXML
 	private TextField txtPathFile;
 
 	@FXML
+	private TextField txtInitDate;
+
+	@FXML
+	private TextField txtCurrentDate;
+
+	@FXML
 	private TextField txtExcludeFile;
-	
+
 	@FXML
 	private void onBtCompareAction() {
-		
+		if ((txtCurrentDate.getText() == null) || (txtInitDate.getText() == null) || (txtInitDate.getText() == "")
+				|| (txtCurrentDate.getText() == "")) {
+			Alerts.showAlert("Preenchimento necessário", "Há campos necessitando serem preenchidos",
+					"Preencha os campos corretamente", AlertType.WARNING);
+			txtCurrentDate.setText(null);
+			txtInitDate.setText(null);
+
+		} else {
+			compareBacklogs();
+		}
+
+	}
+
+	private void compareBacklogs() {
+
+		List<Ticket> provList1 = new ArrayList<>();
+
+		String inputPath1 = txtInitDate.getText();
+
+		provList1 = readFromFile(inputPath1, true);
+		System.out.println(provList1);
 	}
 
 	@FXML
@@ -112,47 +136,27 @@ public class MainController implements Initializable {
 		}
 	}
 
-	public List<Ticket> compareLists(List<Ticket> ticketList) {
+	public List<Ticket> compareLists(List<Ticket> ticketList) { // Compara e remove tickets repetidos para u
 
 		Set<String> s = new HashSet<>();
-		int z = 0;
+
 		for (Ticket t : ticketList) {
-			System.out.println(t + "This ticket is present on the final list");
 
 			if (s.add(t.getNumber()) == false) {
-				System.out.println(t.getNumber() + " is duplicated");
+				System.out.println(t.getNumber() + " is duplicated. Removing from final list");
+				s.remove(t.getNumber());
 
 			} else {
-				System.out.println (t.getNumber() + " not present. Adding to hashset");
-				finalList.add(t);
+				System.out.println(t.getNumber() + " not present. Adding to final list");
 
 			}
 		}
 
-		for (Ticket v : finalList) {
-
-			System.out.println("NOT REPEATED " + z + " - " + v.getNumber());
-			z++;
-
+		Iterator<String> i = s.iterator();
+		while (i.hasNext()) {
+			System.out.println(i);
 		}
 		return finalList;
-	}
-
-	@FXML
-	private void onBtExcludeAction() {
-		if (txtExcludeFile.getText()==null || txtExcludeFile.getText()=="") {
-			Alerts.showAlert("Um arquivo precisa ser especificado!", "Se você quer clicar aqui...", "Selecione o arquivo!", AlertType.ERROR);
-		}
-		else {
-		txtExcludeFile.setDisable(true);
-		String inputPath = txtExcludeFile.getText();
-	
-		ticketList = readFromRawTickets(inputPath);
-	
-		createFile(ticketList, outputPath, end = false);
-		buttonClicked2 = true;
-		
-		}
 	}
 
 	@FXML
@@ -162,10 +166,9 @@ public class MainController implements Initializable {
 		if (validate == true) {
 			txtPathFile.setDisable(true);
 			String inputPath = txtPathFile.getText();
-			ticketList = readFromFile(inputPath);
+			ticketList = readFromFile(inputPath, false);
 			createFile(ticketList, outputPath, end = false);
 			buttonClicked = true;
-			
 
 		} else {
 			txtPathFile.setDisable(false);
@@ -174,17 +177,34 @@ public class MainController implements Initializable {
 
 	}
 
+	@FXML
+	private void onBtExcludeAction() {
+		if (txtExcludeFile.getText() == null || txtExcludeFile.getText() == "") {
+			Alerts.showAlert("Um arquivo precisa ser especificado!", "Se você quer clicar aqui...",
+					"Selecione o arquivo!", AlertType.ERROR);
+		} else {
+			txtExcludeFile.setDisable(true);
+			String inputPath = txtExcludeFile.getText();
+
+			ticketList = readFromRawTickets(inputPath);
+
+			createFile(ticketList, outputPath, end = false);
+			buttonClicked2 = true;
+
+		}
+	}
+
 	private void createFile(List<Ticket> ticketList, String outputPath, Boolean end) {
 		if (end == true) {
-			outputPath = outputPath + "-final";
+			outputPath = outputPath + "-final.csv";
 		}
 
 		try (BufferedWriter bw = new BufferedWriter(new FileWriter(outputPath))) {
 			for (Ticket t : ticketList) {
 				bw.write(t.getNumber() + "," + t.getAssigned_to() + "," + t.getAssignment_group() + "," + t.getStatus()
-						+ "," + t.getCreatedOn() + "," + t.getCreatedOn());
+						+ "," + sdf.format(t.getCreatedOn()) + "," + sdf.format(t.getUpdatedOn()));
 				bw.newLine();
-				
+
 			}
 
 		} catch (IOException e) {
@@ -199,33 +219,55 @@ public class MainController implements Initializable {
 		}
 	}
 
-	public List<Ticket> readFromFile(String inputPath) {
+	public List<Ticket> readFromFile(String inputPath, Boolean compare) {
 
 		try (BufferedReader br = new BufferedReader(new FileReader(inputPath));) {
 
 			String line;
 
-			while ((line = br.readLine()) != null) {
+			if (compare == false) {
 
-				String[] data = (line.split(","));
+				while ((line = br.readLine()) != null) {
 
-				String tNum = data[0].toString().replace("\"", "");
-				String assignedTo = data[1].toString().replace("\"", "");
-				String assignment_group = data[2].toString().replace("\"", "");
-				String status = data[3].toString().replace("\"", "");
-				Date created = sdf.parse(data[4].toString().replace("\"", ""));
-				Date updated = sdf.parse(data[5].toString().replace("\"", ""));
-				CheckBox completed = new CheckBox();
+					String[] data = (line.split(","));
 
-				Ticket ticket = new Ticket(tNum, assignedTo, assignment_group, status, created, updated, completed);
-				System.out.println(ticket + ": Ticket from readFromFile function");
-				ticketList.add(ticket);
+					String tNum = data[0].toString().replace("\"", "");
+					String assignedTo = data[1].toString().replace("\"", "");
+					String assignment_group = data[2].toString().replace("\"", "");
+					String status = data[3].toString().replace("\"", "");
+					Date created = sdf.parse(data[4].toString().replace("\"", ""));
+					Date updated = sdf.parse(data[5].toString().replace("\"", ""));
+					CheckBox completed = new CheckBox();
 
+					Ticket ticket = new Ticket(tNum, assignedTo, assignment_group, status, created, updated, completed);
+					System.out.println(ticket + ": Ticket from readFromFile function");
+					ticketList.add(ticket);
+
+				}
+			} else {
+				while ((line = br.readLine()) != null) {
+					String[] data = (line.split(","));
+
+					String tNum = data[0].toString();
+					String assignedTo = data[1].toString();
+					String assignment_group = data[2].toString();
+					String status = data[3].toString();
+					Date created = sdf.parse(data[4].toString());
+					Date updated = sdf.parse(data[5].toString());
+					CheckBox completed = new CheckBox();
+
+					Ticket ticket = new Ticket(tNum, assignedTo, assignment_group, status, created, updated, completed);
+					System.out.println(ticket + ": Ticket from readFromFile - no replace function");
+					ticketList.add(ticket);
+
+				}
 			}
 
 		} catch (IOException | ParseException e) {
 
-			Alerts.showAlert("Erro", "Arquivo não encontrado ou tipo incorreto :(", "Favor verificar o arquivo", AlertType.ERROR);
+			Alerts.showAlert("Erro", "Arquivo não encontrado ou tipo incorreto :(", "Favor verificar o arquivo",
+					AlertType.ERROR);
+			e.printStackTrace();
 			txtPathFile.setDisable(false);
 			txtPathFile.setText("");
 			btOk.setDisable(false);
@@ -234,7 +276,7 @@ public class MainController implements Initializable {
 		}
 		return ticketList;
 	}
-	
+
 	public List<Ticket> readFromRawTickets(String inputPath) {
 
 		try (BufferedReader br = new BufferedReader(new FileReader(inputPath));) {
@@ -242,13 +284,14 @@ public class MainController implements Initializable {
 			String line;
 
 			while ((line = br.readLine()) != null) {
-				
+
 				String[] data = (line.split(","));
 
 				String tNum = data[0].toString().replace("\"", "");
-			
+				Date created = new Date();
+				Date updated = new Date();
 
-				Ticket ticket = new Ticket(tNum);
+				Ticket ticket = new Ticket(tNum, created, updated);
 				System.out.println(ticket + ": Ticket form readFromRawTicket function");
 				ticketList.add(ticket);
 
@@ -256,7 +299,8 @@ public class MainController implements Initializable {
 
 		} catch (IOException e) {
 
-			Alerts.showAlert("Erro", "Arquivo não encontrado ou tipo incorreto :(", "Favor verificar o arquivo", AlertType.ERROR);
+			Alerts.showAlert("Erro", "Arquivo não encontrado ou tipo incorreto :(", "Favor verificar o arquivo",
+					AlertType.ERROR);
 			txtExcludeFile.setDisable(false);
 			txtExcludeFile.setText("");
 			txtExcludeFile.clear();
@@ -289,8 +333,8 @@ public class MainController implements Initializable {
 
 	public Boolean setValidation() {
 		if ((txtPathFile.getText() == "") || (txtPathFile.getText() == null)) {
-			Alerts.showAlert("Missing fields", "Rapaz, nada foi selecionado.", "Você precisa especificar o arquivo de backlog!",
-					AlertType.WARNING);
+			Alerts.showAlert("Missing fields", "Rapaz, nada foi selecionado.",
+					"Você precisa especificar o arquivo de backlog!", AlertType.WARNING);
 			return (validate = false);
 		} else {
 			return (validate = true);

@@ -137,28 +137,47 @@ public class MainController implements Initializable {
 	}
 
 	public List<Ticket> compareLists(List<Ticket> ticketList) { // Compara e remove tickets repetidos para u
-
+		
+		List<Integer> positions = new ArrayList<>();
+		List<Ticket> tempList = new ArrayList<>();
 		Set<String> s = new HashSet<>();
 
 		for (Ticket t : ticketList) {
-
 			if (s.add(t.getNumber()) == false) {
-				System.out.println(t.getNumber() + " is duplicated. Removing from final list");
+				System.out.println(t.getNumber() + " is duplicated - adding to FinalList");
 				s.remove(t.getNumber());
 				finalList.add(t);
-				
 
 			} else {
-				System.out.println(t.getNumber() + " not present. Adding to final list");
+
+				System.out.println(t.getNumber() + " - Hashset added");
 
 			}
 		}
-		
+		for (Ticket t : finalList) {
+			for (Ticket a : ticketList) {
+				if (a.getNumber().equals(t.getNumber())) {
+					positions.add(ticketList.indexOf(a));
 
-		
-		return finalList;
-	
-}
+				} else {
+
+				}
+			}
+
+		}
+
+		System.out.println("----------------------------");
+		for (Integer z : positions) {
+			System.out.println("Removing index of " + z + " from ticketList");
+			int i = Integer.valueOf(z);
+			ticketList.remove(i);
+		}
+		System.out.println("--------------------------");
+		System.out.println("Size of ticketList: " + ticketList.size());
+
+		return tempList;
+
+	}
 
 	@FXML
 	private void onBtOkAction() throws ParseException {
@@ -187,7 +206,7 @@ public class MainController implements Initializable {
 			txtExcludeFile.setDisable(true);
 			String inputPath = txtExcludeFile.getText();
 
-			ticketList = readFromRawTickets(inputPath);
+			ticketList = readFromFile(inputPath, false);
 
 			createFile(ticketList, outputPath, end = false);
 			buttonClicked2 = true;

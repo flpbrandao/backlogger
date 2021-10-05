@@ -145,19 +145,20 @@ public class MainController implements Initializable {
 			if (s.add(t.getNumber()) == false) {
 				System.out.println(t.getNumber() + " is duplicated. Removing from final list");
 				s.remove(t.getNumber());
+				finalList.add(t);
+				
 
 			} else {
 				System.out.println(t.getNumber() + " not present. Adding to final list");
 
 			}
 		}
+		
 
-		Iterator<String> i = s.iterator();
-		while (i.hasNext()) {
-			System.out.println(i);
-		}
+		
 		return finalList;
-	}
+	
+}
 
 	@FXML
 	private void onBtOkAction() throws ParseException {
@@ -209,13 +210,6 @@ public class MainController implements Initializable {
 
 		} catch (IOException e) {
 
-			// System.out.println("Enter file path: ");
-			// String sourceFileStr = sc.nextLine();
-
-			// File sourceFile = new File(sourceFileStr);
-			// String sourceFolderStr = sourceFile.getParent();
-
-			// boolean success = new File(sourceFolderStr + "\\out").mkdir();
 		}
 	}
 

@@ -137,46 +137,22 @@ public class MainController implements Initializable {
 	}
 
 	public List<Ticket> compareLists(List<Ticket> ticketList) { // Compara e remove tickets repetidos para u
-		
-		List<Integer> positions = new ArrayList<>();
-		List<Ticket> tempList = new ArrayList<>();
-		Set<String> s = new HashSet<>();
+
+		Set<Ticket> s = new HashSet<>();
 
 		for (Ticket t : ticketList) {
-			if (s.add(t.getNumber()) == false) {
+			if (s.add(t) == false) {
 				System.out.println(t.getNumber() + " is duplicated - adding to FinalList");
-				s.remove(t.getNumber());
-				finalList.add(t);
-
-			} else {
-
-				System.out.println(t.getNumber() + " - Hashset added");
+				s.remove(t);
 
 			}
-		}
-		for (Ticket t : finalList) {
-			for (Ticket a : ticketList) {
-				if (a.getNumber().equals(t.getNumber())) {
-					positions.add(ticketList.indexOf(a));
-
-				} else {
-
-				}
-			}
 
 		}
 
-		System.out.println("----------------------------");
-		for (Integer z : positions) {
-			System.out.println("Removing index of " + z + " from ticketList");
-			int i = Integer.valueOf(z);
-			ticketList.remove(i);
+		for (Ticket t : s) {
+			finalList.add(t);
 		}
-		System.out.println("--------------------------");
-		System.out.println("Size of ticketList: " + ticketList.size());
-
-		return tempList;
-
+		return finalList;
 	}
 
 	@FXML
@@ -206,7 +182,7 @@ public class MainController implements Initializable {
 			txtExcludeFile.setDisable(true);
 			String inputPath = txtExcludeFile.getText();
 
-			ticketList = readFromFile(inputPath, false);
+			ticketList = readFromRawTickets(inputPath);
 
 			createFile(ticketList, outputPath, end = false);
 			buttonClicked2 = true;

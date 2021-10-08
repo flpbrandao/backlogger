@@ -5,8 +5,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<VBox prefHeight="312.0" prefWidth="394.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16">
+<VBox prefHeight="312.0" prefWidth="394.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label text="About">
          <font>
@@ -16,7 +15,7 @@
             <Insets bottom="10.0" left="20.0" top="10.0" />
          </padding>
       </Label>
-      <Label text="My first JavaFX appplication. This is intended to organize my life.">
+      <Label prefHeight="83.0" prefWidth="394.0" text="This is Felipe's second Java application, and it was intended to organize backlog reports at TechnipFMC contract with Cognizant. For any queries or support contact (22) 992345457 or flpbrandao@hotmail.com" textAlignment="CENTER" wrapText="true">
          <padding>
             <Insets left="20.0" />
          </padding>

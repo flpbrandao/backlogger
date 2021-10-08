@@ -11,7 +11,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -30,7 +29,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-public class MainController implements Initializable {
+public class GenerateReports2Controller implements Initializable {
 
 	Boolean buttonClicked, buttonClicked2, validate, end = false;
 	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -136,8 +135,7 @@ public class MainController implements Initializable {
 		}
 	}
 
-	public List<Ticket> compareLists(List<Ticket> ticketList) { // Compara e remove tickets repetidos para u
-
+	public List<Ticket> compareLists(List<Ticket> ticketList) { 
 		Set<Ticket> s = new HashSet<>();
 
 		for (Ticket t : ticketList) {

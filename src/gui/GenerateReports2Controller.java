@@ -28,6 +28,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import services.CreateExcelFile;
 
 public class GenerateReports2Controller implements Initializable {
 
@@ -70,6 +71,15 @@ public class GenerateReports2Controller implements Initializable {
 	private Button btOk;
 
 	@FXML
+	private Button btExit;
+
+	@FXML
+	private Button btClean;
+
+	@FXML
+	private Button btExport;
+
+	@FXML
 	private Button btExclude;
 
 	@FXML
@@ -89,6 +99,33 @@ public class GenerateReports2Controller implements Initializable {
 
 	@FXML
 	private TextField txtExcludeFile;
+
+	@FXML
+
+	private void onBtCleanAction() {
+		txtPathFile.setText("");
+		txtExcludeFile.setText("");
+		txtExcludeFile.setDisable(false);
+		txtPathFile.setDisable(false);
+		btOk.setDisable(false);
+		btExclude.setDisable(false);
+		btGenerate.setDisable(false);
+		buttonClicked = false;
+		buttonClicked2 = false;
+		tableViewTicket.setItems(null);
+
+	}
+
+	@FXML
+	private void onBtExitAction() {
+
+	}
+
+	@FXML
+	private void onBtExportAction() {
+		CreateExcelFile excel = new CreateExcelFile();
+		excel.createExcelFile(outputPath);
+	}
 
 	@FXML
 	private void onBtCompareAction() {
@@ -135,7 +172,7 @@ public class GenerateReports2Controller implements Initializable {
 		}
 	}
 
-	public List<Ticket> compareLists(List<Ticket> ticketList) { 
+	public List<Ticket> compareLists(List<Ticket> ticketList) {
 		Set<Ticket> s = new HashSet<>();
 
 		for (Ticket t : ticketList) {
@@ -313,9 +350,6 @@ public class GenerateReports2Controller implements Initializable {
 		tableColumnUpdatedOn.setCellValueFactory(new PropertyValueFactory<>("updatedOn"));
 		tableColumnCompleted.setCellValueFactory(new PropertyValueFactory<>("Completed"));
 
-		// String number, String assigned_to, String assignment_group, String status,
-		// Date createdOn,
-		// Date updatedOn, CheckBox complete
 	}
 
 	public Boolean setValidation() {

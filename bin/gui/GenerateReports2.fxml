@@ -6,8 +6,9 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GenerateReports2Controller">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="598.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GenerateReports2Controller">
    <children>
       <AnchorPane prefHeight="598.0" prefWidth="577.0">
          <children>
@@ -19,7 +20,7 @@
                   <TableColumn fx:id="tableColumnCreatedOn" prefWidth="75.0" text="Created" />
                   <TableColumn fx:id="tableColumnUpdatedOn" prefWidth="75.0" text="Updated" />
                   <TableColumn fx:id="tableColumnStatus" prefWidth="75.0" text="Status" />
-                  <TableColumn fx:id="tableColumnCompleted" prefWidth="101.0" text="Mark as done" />
+                  <TableColumn fx:id="tableColumnCompleted" prefWidth="101.0" text="Select" />
                </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -30,6 +31,18 @@
             <TextField fx:id="txtExcludeFile" alignment="BOTTOM_CENTER" layoutX="14.0" layoutY="78.0" prefHeight="25.0" prefWidth="427.0" promptText="Lista de tickets a serem excluídos do relatório de backlog." />
             <Button fx:id="btOk" layoutX="452.0" layoutY="30.0" mnemonicParsing="false" onAction="#onBtOkAction" prefHeight="29.0" prefWidth="134.0" text="Ler arquivo CSV" />
             <TextField fx:id="txtPathFile" alignment="BOTTOM_CENTER" layoutX="14.0" layoutY="32.0" prefHeight="25.0" prefWidth="427.0" promptText="Arquivo princial e obrigatório." />
+            <Button fx:id="btExit" layoutX="28.0" layoutY="517.0" mnemonicParsing="false" onAction="#onBtExitAction" prefHeight="48.0" prefWidth="148.0" text="Exit">
+               <font>
+                  <Font name="Calibri" size="13.0" />
+               </font></Button>
+            <Button fx:id="btClean" layoutX="228.0" layoutY="517.0" mnemonicParsing="false" onAction="#onBtCleanAction" prefHeight="48.0" prefWidth="148.0" text="Clean">
+               <font>
+                  <Font name="Calibri" size="13.0" />
+               </font></Button>
+            <Button fx:id="btExport" layoutX="426.0" layoutY="517.0" mnemonicParsing="false" onAction="#onBtExportAction" prefHeight="48.0" prefWidth="148.0" text="Export" textFill="#1b1ec3">
+               <font>
+                  <Font name="Calibri" size="13.0" />
+               </font></Button>
          </children>
       </AnchorPane>
    </children>

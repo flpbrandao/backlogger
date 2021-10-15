@@ -2,6 +2,7 @@ package gui;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -23,10 +24,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import services.CreateExcelFile;
 
 public class GenerateReports2Controller implements Initializable {
@@ -43,11 +49,20 @@ public class GenerateReports2Controller implements Initializable {
 	private ObservableList<Ticket> obsList;
 
 	@FXML
+	private Label lblPath;
+
+	@FXML
+	private TextArea txtArea;
+
+	@FXML
+	private CheckBox chkExclude;
+
+	@FXML
 	private TableView<Ticket> tableViewTicket;
 
 	@FXML
 	private TableColumn<Ticket, String> tableColumnNumber;
-	
+
 	@FXML
 	private TableColumn<Ticket, Date> tableColumnAssignedTo;
 
@@ -64,7 +79,7 @@ public class GenerateReports2Controller implements Initializable {
 	private TableColumn<Ticket, Date> tableColumnUpdatedOn;
 
 	@FXML
-	private Button btOk;
+	private Button btFileChooser;
 
 	@FXML
 	private Button btExit;
@@ -76,16 +91,10 @@ public class GenerateReports2Controller implements Initializable {
 	private Button btExport;
 
 	@FXML
-	private Button btExclude;
-
-	@FXML
 	private Button btGenerate;
 
 	@FXML
 	private Button btCompare;
-
-	@FXML
-	private TextField txtPathFile;
 
 	@FXML
 	private TextField txtInitDate;
@@ -94,23 +103,48 @@ public class GenerateReports2Controller implements Initializable {
 	private TextField txtCurrentDate;
 
 	@FXML
-	private TextField txtExcludeFile;
+	private void onBtFileChooserAction() {
+		FileChooser fc = new FileChooser();
+		fc.getExtensionFilters().addAll(new ExtensionFilter("CSV Files", "*.csv"));
+		File selectedFile = fc.showOpenDialog(null);
+		if (selectedFile != null) {
+
+			txtArea.setText(selectedFile.getAbsolutePath());
+			String inputPath = selectedFile.getAbsolutePath();
+			ticketList = readFromFile(inputPath, false);
+			createFile(ticketList, outputPath, end = false);
+			buttonClicked = true;
+
+		} else {
+			Alerts.showAlert("Invalid file", "Seleção incorreta", "Selecione um arquivo válido!", AlertType.ERROR);
+		}
+
+	}
 
 	@FXML
-
 	private void onBtCleanAction() {
-		txtPathFile.setText("");
-		txtExcludeFile.setText("");
-		txtExcludeFile.setDisable(false);
-		txtPathFile.setDisable(false);
-		btOk.setDisable(false);
-		btExclude.setDisable(false);
+
 		btGenerate.setDisable(false);
 		buttonClicked = false;
 		buttonClicked2 = false;
 		tableViewTicket.setItems(null);
 		btExport.setDisable(true);
+		chkExclude.setDisable(false);
+		chkExclude.setSelected(false);
+		txtArea.setText("");
+		btFileChooser.setDisable(false);
+		
+	}
 
+	@FXML
+	private void onchkExcludeAction() {
+		String path = ".\\data\\Exclude\\Exclude";
+
+		ticketList = readFromRawTickets(path);
+
+		createFile(ticketList, outputPath, end = false);
+		buttonClicked2 = true;
+		chkExclude.setDisable(true);
 	}
 
 	@FXML
@@ -126,49 +160,19 @@ public class GenerateReports2Controller implements Initializable {
 	}
 
 	@FXML
-	private void onBtCompareAction() {
-		if ((txtCurrentDate.getText() == null) || (txtInitDate.getText() == null) || (txtInitDate.getText() == "")
-				|| (txtCurrentDate.getText() == "")) {
-			Alerts.showAlert("Preenchimento necessário", "Há campos necessitando serem preenchidos",
-					"Preencha os campos corretamente", AlertType.WARNING);
-			txtCurrentDate.setText(null);
-			txtInitDate.setText(null);
-
-		} else {
-			compareBacklogs();
-		}
-
-	}
-
-	private void compareBacklogs() {
-
-		List<Ticket> provList1 = new ArrayList<>();
-
-		String inputPath1 = txtInitDate.getText();
-
-		provList1 = readFromFile(inputPath1, true);
-		System.out.println(provList1);
-	}
-
-	@FXML
 	private void onBtGenerateAction() {
-		setValidation();
-		if (validate == true) {
-			txtExcludeFile.setDisable(true);
-			txtPathFile.setDisable(true);
-			btExclude.setDisable(true);
-			btOk.setDisable(true);
-			btGenerate.setDisable(true);
-			List<Ticket> defList = new ArrayList<>();
-			defList = compareLists(ticketList);
-			obsList = FXCollections.observableArrayList(defList);
-			tableViewTicket.setItems(obsList);
-			createFile(defList, outputPath, end = true);
-			btExport.setDisable(false);
-		} else {
-			txtExcludeFile.setDisable(false);
-			txtPathFile.setDisable(false);
-		}
+
+		btGenerate.setDisable(true);
+		List<Ticket> defList = new ArrayList<>();
+		defList = compareLists(ticketList);
+		obsList = FXCollections.observableArrayList(defList);
+		tableViewTicket.setItems(obsList);
+		createFile(defList, outputPath, end = true);
+		btExport.setDisable(false);
+		chkExclude.setDisable(true);
+		btFileChooser.setDisable(true);
+		
+
 	}
 
 	public List<Ticket> compareLists(List<Ticket> ticketList) {
@@ -187,41 +191,6 @@ public class GenerateReports2Controller implements Initializable {
 			finalList.add(t);
 		}
 		return finalList;
-	}
-
-	@FXML
-	private void onBtOkAction() throws ParseException {
-
-		setValidation();
-		if (validate == true) {
-			txtPathFile.setDisable(true);
-			String inputPath = txtPathFile.getText();
-			ticketList = readFromFile(inputPath, false);
-			createFile(ticketList, outputPath, end = false);
-			buttonClicked = true;
-
-		} else {
-			txtPathFile.setDisable(false);
-
-		}
-
-	}
-
-	@FXML
-	private void onBtExcludeAction() {
-		if (txtExcludeFile.getText() == null || txtExcludeFile.getText() == "") {
-			Alerts.showAlert("Um arquivo precisa ser especificado!", "Se você quer clicar aqui...",
-					"Selecione o arquivo!", AlertType.ERROR);
-		} else {
-			txtExcludeFile.setDisable(true);
-			String inputPath = txtExcludeFile.getText();
-
-			ticketList = readFromRawTickets(inputPath);
-
-			createFile(ticketList, outputPath, end = false);
-			buttonClicked2 = true;
-
-		}
 	}
 
 	private void createFile(List<Ticket> ticketList, String outputPath, Boolean end) {
@@ -261,7 +230,6 @@ public class GenerateReports2Controller implements Initializable {
 					String status = data[3].toString().replace("\"", "");
 					Date created = sdf.parse(data[4].toString().replace("\"", ""));
 					Date updated = sdf.parse(data[5].toString().replace("\"", ""));
-					
 
 					Ticket ticket = new Ticket(tNum, assignedTo, assignment_group, status, created, updated);
 					System.out.println(ticket + ": Ticket from readFromFile function");
@@ -278,7 +246,6 @@ public class GenerateReports2Controller implements Initializable {
 					String status = data[3].toString();
 					Date created = sdf.parse(data[4].toString());
 					Date updated = sdf.parse(data[5].toString());
-				
 
 					Ticket ticket = new Ticket(tNum, assignedTo, assignment_group, status, created, updated);
 					System.out.println(ticket + ": Ticket from readFromFile - no replace function");
@@ -292,9 +259,7 @@ public class GenerateReports2Controller implements Initializable {
 			Alerts.showAlert("Erro", "Arquivo não encontrado ou tipo incorreto :(", "Favor verificar o arquivo",
 					AlertType.ERROR);
 			e.printStackTrace();
-			txtPathFile.setDisable(false);
-			txtPathFile.setText("");
-			btOk.setDisable(false);
+
 		} finally {
 
 		}
@@ -325,10 +290,7 @@ public class GenerateReports2Controller implements Initializable {
 
 			Alerts.showAlert("Erro", "Arquivo não encontrado ou tipo incorreto :(", "Favor verificar o arquivo",
 					AlertType.ERROR);
-			txtExcludeFile.setDisable(false);
-			txtExcludeFile.setText("");
-			txtExcludeFile.clear();
-			btExclude.setDisable(false);
+
 		} finally {
 
 		}
@@ -349,18 +311,6 @@ public class GenerateReports2Controller implements Initializable {
 		tableColumnStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
 		tableColumnCreatedOn.setCellValueFactory(new PropertyValueFactory<>("createdOn"));
 		tableColumnUpdatedOn.setCellValueFactory(new PropertyValueFactory<>("updatedOn"));
-		
-
-	}
-
-	public Boolean setValidation() {
-		if ((txtPathFile.getText() == "") || (txtPathFile.getText() == null)) {
-			Alerts.showAlert("Missing fields", "Rapaz, nada foi selecionado.",
-					"Você precisa especificar o arquivo de backlog!", AlertType.WARNING);
-			return (validate = false);
-		} else {
-			return (validate = true);
-		}
 
 	}
 

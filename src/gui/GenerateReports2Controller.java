@@ -124,7 +124,7 @@ public class GenerateReports2Controller implements Initializable {
 	@FXML
 	private void onBtExportAction() {
 		CreateExcelFile excel = new CreateExcelFile();
-		excel.createExcelFile(outputPath);
+		excel.createExcelFile(outputPath, new Date(), finalList);
 	}
 
 	@FXML

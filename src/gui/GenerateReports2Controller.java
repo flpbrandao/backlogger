@@ -23,7 +23,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -48,7 +47,7 @@ public class GenerateReports2Controller implements Initializable {
 
 	@FXML
 	private TableColumn<Ticket, String> tableColumnNumber;
-
+	
 	@FXML
 	private TableColumn<Ticket, Date> tableColumnAssignedTo;
 
@@ -63,9 +62,6 @@ public class GenerateReports2Controller implements Initializable {
 
 	@FXML
 	private TableColumn<Ticket, Date> tableColumnUpdatedOn;
-
-	@FXML
-	private TableColumn<Ticket, Date> tableColumnCompleted;
 
 	@FXML
 	private Button btOk;
@@ -113,6 +109,7 @@ public class GenerateReports2Controller implements Initializable {
 		buttonClicked = false;
 		buttonClicked2 = false;
 		tableViewTicket.setItems(null);
+		btExport.setDisable(true);
 
 	}
 
@@ -125,6 +122,7 @@ public class GenerateReports2Controller implements Initializable {
 	private void onBtExportAction() {
 		CreateExcelFile excel = new CreateExcelFile();
 		excel.createExcelFile(outputPath, new Date(), finalList);
+		onBtCleanAction();
 	}
 
 	@FXML
@@ -166,6 +164,7 @@ public class GenerateReports2Controller implements Initializable {
 			obsList = FXCollections.observableArrayList(defList);
 			tableViewTicket.setItems(obsList);
 			createFile(defList, outputPath, end = true);
+			btExport.setDisable(false);
 		} else {
 			txtExcludeFile.setDisable(false);
 			txtPathFile.setDisable(false);
@@ -177,7 +176,7 @@ public class GenerateReports2Controller implements Initializable {
 
 		for (Ticket t : ticketList) {
 			if (s.add(t) == false) {
-				System.out.println(t.getNumber() + " is duplicated - adding to FinalList");
+				System.out.println(t.getNumber() + " is duplicated - removing from HashSet and list");
 				s.remove(t);
 
 			}
@@ -248,6 +247,7 @@ public class GenerateReports2Controller implements Initializable {
 		try (BufferedReader br = new BufferedReader(new FileReader(inputPath));) {
 
 			String line;
+			br.readLine();
 
 			if (compare == false) {
 
@@ -261,9 +261,9 @@ public class GenerateReports2Controller implements Initializable {
 					String status = data[3].toString().replace("\"", "");
 					Date created = sdf.parse(data[4].toString().replace("\"", ""));
 					Date updated = sdf.parse(data[5].toString().replace("\"", ""));
-					CheckBox completed = new CheckBox();
+					
 
-					Ticket ticket = new Ticket(tNum, assignedTo, assignment_group, status, created, updated, completed);
+					Ticket ticket = new Ticket(tNum, assignedTo, assignment_group, status, created, updated);
 					System.out.println(ticket + ": Ticket from readFromFile function");
 					ticketList.add(ticket);
 
@@ -278,9 +278,9 @@ public class GenerateReports2Controller implements Initializable {
 					String status = data[3].toString();
 					Date created = sdf.parse(data[4].toString());
 					Date updated = sdf.parse(data[5].toString());
-					CheckBox completed = new CheckBox();
+				
 
-					Ticket ticket = new Ticket(tNum, assignedTo, assignment_group, status, created, updated, completed);
+					Ticket ticket = new Ticket(tNum, assignedTo, assignment_group, status, created, updated);
 					System.out.println(ticket + ": Ticket from readFromFile - no replace function");
 					ticketList.add(ticket);
 
@@ -338,6 +338,7 @@ public class GenerateReports2Controller implements Initializable {
 	@Override
 	public void initialize(URL url, ResourceBundle rg) {
 		initializeTableView();
+		btExport.setDisable(true);
 	}
 
 	private void initializeTableView() {
@@ -348,7 +349,7 @@ public class GenerateReports2Controller implements Initializable {
 		tableColumnStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
 		tableColumnCreatedOn.setCellValueFactory(new PropertyValueFactory<>("createdOn"));
 		tableColumnUpdatedOn.setCellValueFactory(new PropertyValueFactory<>("updatedOn"));
-		tableColumnCompleted.setCellValueFactory(new PropertyValueFactory<>("Completed"));
+		
 
 	}
 

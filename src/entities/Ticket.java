@@ -38,7 +38,9 @@ public class Ticket {
 		this.createdOn = createdOn;
 		this.updatedOn = updatedOn;
 	}
-	
+
+
+
 	public Ticket(String number) {
 		this.number = number;
 	
@@ -74,7 +76,6 @@ public class Ticket {
 	public String getNumber() {
 		return number;
 	}
-
 
 
 

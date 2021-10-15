@@ -10,6 +10,8 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import entities.Ticket;
+import gui.util.Alerts;
+import javafx.scene.control.Alert.AlertType;
 
 public class CreateExcelFile {
 
@@ -56,12 +58,10 @@ public class CreateExcelFile {
 
 			FileOutputStream fileOut = new FileOutputStream(filename);
 			workbook.write(fileOut);
-			// closing the Stream
 			fileOut.close();
-			// closing the workbook
 			workbook.close();
-			// prints the message on the console
-			System.out.println("Excel file has been generated successfully.");
+			
+			Alerts.showAlert("Success", "Arquivo gerado", "Seu arquivo foi gerado com sucesso em " + path, AlertType.INFORMATION);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

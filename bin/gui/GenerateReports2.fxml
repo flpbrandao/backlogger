@@ -15,12 +15,11 @@
             <TableView fx:id="tableViewTicket" layoutX="11.0" layoutY="172.0" prefHeight="322.0" prefWidth="580.0">
                <columns>
                   <TableColumn fx:id="tableColumnNumber" prefWidth="75.0" text="Number" />
-                  <TableColumn fx:id="tableColumnAssignedTo" prefWidth="75.0" text="Assigned To" />
+                  <TableColumn fx:id="tableColumnAssignedTo" minWidth="0.0" prefWidth="26.0" text="Assigned To" />
                   <TableColumn fx:id="tableColumnAssignmentGroup" prefWidth="75.0" text="Queue" />
                   <TableColumn fx:id="tableColumnCreatedOn" prefWidth="75.0" text="Created" />
                   <TableColumn fx:id="tableColumnUpdatedOn" prefWidth="75.0" text="Updated" />
                   <TableColumn fx:id="tableColumnStatus" prefWidth="75.0" text="Status" />
-                  <TableColumn fx:id="tableColumnCompleted" prefWidth="101.0" text="Select" />
                </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

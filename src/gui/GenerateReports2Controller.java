@@ -42,10 +42,11 @@ public class GenerateReports2Controller implements Initializable {
 	SimpleDateFormat todayDate = new SimpleDateFormat("dd-MM-yyyy");
 	List<Ticket> ticketList = new ArrayList<>();
 	List<Ticket> finalList = new ArrayList<>();
-	List<Ticket> ticketExcludedList = new ArrayList<>();
 	Ticket ticket;
 	String todayDateString = todayDate.format(new Date());
 	String outputPath = ".\\data\\" + todayDateString;
+	FileChooser fc = new FileChooser();
+	
 	private ObservableList<Ticket> obsList;
 
 	@FXML
@@ -102,9 +103,10 @@ public class GenerateReports2Controller implements Initializable {
 	@FXML
 	private TextField txtCurrentDate;
 
+
 	@FXML
 	private void onBtFileChooserAction() {
-		FileChooser fc = new FileChooser();
+		
 		fc.getExtensionFilters().addAll(new ExtensionFilter("CSV Files", "*.csv"));
 		File selectedFile = fc.showOpenDialog(null);
 		if (selectedFile != null) {
@@ -133,7 +135,7 @@ public class GenerateReports2Controller implements Initializable {
 		chkExclude.setSelected(false);
 		txtArea.setText("");
 		btFileChooser.setDisable(false);
-		
+
 	}
 
 	@FXML
@@ -164,36 +166,39 @@ public class GenerateReports2Controller implements Initializable {
 
 		btGenerate.setDisable(true);
 		List<Ticket> defList = new ArrayList<>();
-		defList = compareLists(ticketList);
+		defList = compareLists(ticketList, false);
 		obsList = FXCollections.observableArrayList(defList);
 		tableViewTicket.setItems(obsList);
 		createFile(defList, outputPath, end = true);
 		btExport.setDisable(false);
 		chkExclude.setDisable(true);
 		btFileChooser.setDisable(true);
-		
 
 	}
 
-	public List<Ticket> compareLists(List<Ticket> ticketList) {
+	public List<Ticket> compareLists(List<Ticket> ticketList, Boolean comparison) {
 		Set<Ticket> s = new HashSet<>();
 
 		for (Ticket t : ticketList) {
 			if (s.add(t) == false) {
 				System.out.println(t.getNumber() + " is duplicated - removing from HashSet and list");
-				s.remove(t);
+				if (comparison == true) {
+					finalList.add(t);
+				}
 
 			}
 
 		}
-
-		for (Ticket t : s) {
-			finalList.add(t);
+		if (comparison == false) {
+			for (Ticket t : s) {
+				finalList.add(t);
+			}
 		}
 		return finalList;
+
 	}
 
-	private void createFile(List<Ticket> ticketList, String outputPath, Boolean end) {
+	public void createFile(List<Ticket> ticketList, String outputPath, Boolean end) {
 		if (end == true) {
 			outputPath = outputPath + "-alltickets.csv";
 		}

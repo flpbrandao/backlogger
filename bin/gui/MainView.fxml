@@ -15,7 +15,7 @@
                 <Menu mnemonicParsing="false" text="Funções">
                      <items>
                         <MenuItem fx:id="menuItemMain" mnemonicParsing="false" onAction="#onMenuItemMain" text="Gerar report" />
-                        <MenuItem mnemonicParsing="false" text="Comparar Reports" />
+                        <MenuItem fx:id="menuItemCompare" mnemonicParsing="false" onAction="#onMenuIntemCompare" text="Comparar Reports" />
                      </items>
                 </Menu>
                   <Menu mnemonicParsing="false" text="Sobre">

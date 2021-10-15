@@ -20,13 +20,21 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class MainViewController implements Initializable {
+
 	@FXML
 	private MenuItem menuItemMain;
 
+	@FXML
+	private MenuItem menuItemCompare;
+	
+	public void onMenuIntemCompare() {
+		loadView("/gui/CompareReports.fxml");
+	}
+
 	public void onMenuItemMain() {
-		
-				loadView("/gui/GenerateReports2.fxml");
-				
+
+		loadView("/gui/GenerateReports2.fxml");
+
 	}
 
 	@FXML
@@ -34,15 +42,15 @@ public class MainViewController implements Initializable {
 
 	public void onMenuItemAbout() {
 		createDialogForm("/gui/About.fxml"); // Passa como parametro o FXML da tela About e suas propriedades para ser
-										// executado em LoadView
+		// executado em LoadView
 	}
 
 	@Override
 	public void initialize(URL uri, ResourceBundle rg) {
-		
+
 	}
 
-	public void createDialogForm(String absoluteName) { //Precisa de ajuste para ficar no mesmo Stage
+	public void createDialogForm(String absoluteName) { // Precisa de ajuste para ficar no mesmo Stage
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
 			Pane pane = loader.load();
@@ -59,6 +67,7 @@ public class MainViewController implements Initializable {
 			e.printStackTrace();
 		}
 	}
+
 	public synchronized void loadView(String absoluteName) { // Método recebendo a string com o caminho do FXML
 		try {
 

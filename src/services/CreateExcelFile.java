@@ -23,7 +23,7 @@ public class CreateExcelFile {
 		
 		try {
 			// declare file name to be create
-			String filename = path + ".xlsx";
+			String filename = path + "-FINAL REPORT.xlsx";
 			// creating an instance of XSSFWorkbook class
 			XSSFWorkbook workbook = new XSSFWorkbook();
 			// invoking creatSheet() method and passing the name of the sheet to be created

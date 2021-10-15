@@ -227,7 +227,7 @@ public class GenerateReports2Controller implements Initializable {
 
 	private void createFile(List<Ticket> ticketList, String outputPath, Boolean end) {
 		if (end == true) {
-			outputPath = outputPath + "-final.csv";
+			outputPath = outputPath + "-alltickets.csv";
 		}
 
 		try (BufferedWriter bw = new BufferedWriter(new FileWriter(outputPath))) {

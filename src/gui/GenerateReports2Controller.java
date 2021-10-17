@@ -24,7 +24,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -53,10 +52,13 @@ public class GenerateReports2Controller implements Initializable {
 	private Label lblPath;
 
 	@FXML
+	private Button btExclude;
+
+	@FXML
 	private TextArea txtArea;
 
 	@FXML
-	private CheckBox chkExclude;
+	private TextArea txtArea1;
 
 	@FXML
 	private TableView<Ticket> tableViewTicket;
@@ -81,9 +83,6 @@ public class GenerateReports2Controller implements Initializable {
 
 	@FXML
 	private Button btFileChooser;
-
-	@FXML
-	private Button btExit;
 
 	@FXML
 	private Button btClean;
@@ -116,6 +115,7 @@ public class GenerateReports2Controller implements Initializable {
 			createFile(ticketList, outputPath, end = false);
 			buttonClicked = true;
 			Alerts.showAlert("Informação", "Leitura feita com sucesso.", inputPath, AlertType.INFORMATION);
+			buttonClicked = true;
 
 		} else {
 			Alerts.showAlert("Erro", "Seleção incorreta", "Selecione um arquivo válido!", AlertType.ERROR);
@@ -131,29 +131,32 @@ public class GenerateReports2Controller implements Initializable {
 		buttonClicked2 = false;
 		tableViewTicket.setItems(null);
 		btExport.setDisable(true);
-		chkExclude.setDisable(false);
-		chkExclude.setSelected(false);
 		txtArea.setText("");
+		txtArea1.setText("");
 		btFileChooser.setDisable(false);
-
+		buttonClicked = false;
+		ticketList.clear();
+		finalList.clear();
+		
 	}
 
 	@FXML
 	private void onchkExcludeAction() {
-		String path = ".\\data\\Exclude\\Exclude";
 
-		ticketList = readFromRawTickets(path);
+		FileChooser fc2 = new FileChooser();
+//		fc.getExtensionFilters().addAll(new ExtensionFilter("CSV Files", "*.csv"));
+		File selectedFile = fc2.showOpenDialog(null);
+		if (selectedFile != null) {
+			txtArea1.setText(selectedFile.getAbsolutePath());
+			ticketList = readFromRawTickets(selectedFile.getAbsolutePath());
 
-		createFile(ticketList, outputPath, end = false);
-		buttonClicked2 = true;
-		chkExclude.setDisable(true);
-		Alerts.showAlert("Informação", "Arquivos lidos", "Os arquivos a serem excluídos foram lidos.",
-				AlertType.INFORMATION);
-	}
-
-	@FXML
-	private void onBtExitAction() {
-
+			createFile(ticketList, outputPath, end = false);
+			buttonClicked2 = true;
+			Alerts.showAlert("Informação", "Arquivos lidos", "Os arquivos a serem excluídos foram lidos.",
+					AlertType.INFORMATION);
+		} else {
+			Alerts.showAlert("Erro", "Favor selecionar um arquivo válido.", null, AlertType.WARNING);
+		}
 	}
 
 	@FXML
@@ -165,16 +168,20 @@ public class GenerateReports2Controller implements Initializable {
 
 	@FXML
 	private void onBtGenerateAction() {
+		if ((buttonClicked == false) || (buttonClicked == null)) {
+			Alerts.showAlert("Erro", "Você deve selecionar ao menos um report de entrada!", null, AlertType.ERROR);
+			onBtCleanAction();
+		} else {
 
-		btGenerate.setDisable(true);
-		List<Ticket> defList = new ArrayList<>();
-		defList = compareLists(ticketList, false);
-		obsList = FXCollections.observableArrayList(defList);
-		tableViewTicket.setItems(obsList);
-		createFile(defList, outputPath, end = true);
-		btExport.setDisable(false);
-		chkExclude.setDisable(true);
-		btFileChooser.setDisable(true);
+			btGenerate.setDisable(true);
+			List<Ticket> defList = new ArrayList<>();
+			defList = compareLists(ticketList, false);
+			obsList = FXCollections.observableArrayList(defList);
+			tableViewTicket.setItems(obsList);
+			createFile(defList, outputPath, end = true);
+			btExport.setDisable(false);
+			btFileChooser.setDisable(true);
+		}
 
 	}
 
@@ -206,10 +213,10 @@ public class GenerateReports2Controller implements Initializable {
 			}
 		}
 		if (excludeFromList.size() > 0) {
-		Alerts.showAlert("Informação", "Tickets ausentes no report", "Existem " + excludeFromList.size()
-				+ " tickets que estão no relatório a ser excluído mas não estão no report. Isto pode significar que o ticket foi "
-				+ "fechado ou tem menos de 5 dias. Um arquivo foi criado para verificação, na pasta 'data' com o final 'verify",
-				AlertType.INFORMATION);
+			Alerts.showAlert("Informação", "Tickets ausentes no report", "Existem " + excludeFromList.size()
+					+ " tickets que estão no relatório a ser excluído mas não estão no report. Isto pode significar que o ticket foi "
+					+ "fechado ou tem menos de 5 dias. Um arquivo foi criado para verificação, na pasta 'data' com o final 'verify",
+					AlertType.INFORMATION);
 		}
 		return finalList;
 
@@ -332,6 +339,7 @@ public class GenerateReports2Controller implements Initializable {
 	public void initialize(URL url, ResourceBundle rg) {
 		initializeTableView();
 		btExport.setDisable(true);
+		buttonClicked = false;
 	}
 
 	private void initializeTableView() {

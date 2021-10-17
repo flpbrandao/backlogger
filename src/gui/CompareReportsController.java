@@ -94,6 +94,7 @@ public class CompareReportsController implements Initializable {
 			tableView.setItems(obsList);
 			c1.createExcelFile(".\\data\\Tickets_nao_tratados.xlsx",(new Date()), ultimateList);
 		}
+		
 
 	}
 

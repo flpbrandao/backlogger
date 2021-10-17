@@ -46,7 +46,7 @@ public class GenerateReports2Controller implements Initializable {
 	String todayDateString = todayDate.format(new Date());
 	String outputPath = ".\\data\\" + todayDateString;
 	FileChooser fc = new FileChooser();
-	
+
 	private ObservableList<Ticket> obsList;
 
 	@FXML
@@ -103,10 +103,9 @@ public class GenerateReports2Controller implements Initializable {
 	@FXML
 	private TextField txtCurrentDate;
 
-
 	@FXML
 	private void onBtFileChooserAction() {
-		
+
 		fc.getExtensionFilters().addAll(new ExtensionFilter("CSV Files", "*.csv"));
 		File selectedFile = fc.showOpenDialog(null);
 		if (selectedFile != null) {
@@ -148,7 +147,8 @@ public class GenerateReports2Controller implements Initializable {
 		createFile(ticketList, outputPath, end = false);
 		buttonClicked2 = true;
 		chkExclude.setDisable(true);
-		Alerts.showAlert("Leitura feita", "Arquivos lidos", "Os arquivos a serem excluídos foram lidos." , AlertType.INFORMATION);
+		Alerts.showAlert("Leitura feita", "Arquivos lidos", "Os arquivos a serem excluídos foram lidos.",
+				AlertType.INFORMATION);
 	}
 
 	@FXML
@@ -203,11 +203,11 @@ public class GenerateReports2Controller implements Initializable {
 
 	public void createFile(List<Ticket> ticketList, String outputPath, Boolean end) {
 		if (end == true) {
-			outputPath = outputPath + "-alltickets.csv";
+			outputPath = outputPath + "-final-csv-report.csv";
 		}
 
 		try (BufferedWriter bw = new BufferedWriter(new FileWriter(outputPath))) {
-			bw.write("BASELINE -Não apagar");
+			bw.write("BASELINE - Não apagar");
 			bw.newLine();
 			for (Ticket t : ticketList) {
 				bw.write(t.getNumber() + "," + t.getAssigned_to() + "," + t.getAssignment_group() + "," + t.getStatus()
@@ -231,7 +231,7 @@ public class GenerateReports2Controller implements Initializable {
 			if (compare == false) {
 
 				while ((line = br.readLine()) != null) {
-
+                    try {
 					String[] data = (line.split(","));
 
 					String tNum = data[0].toString().replace("\"", "");
@@ -244,24 +244,32 @@ public class GenerateReports2Controller implements Initializable {
 					Ticket ticket = new Ticket(tNum, assignedTo, assignment_group, status, created, updated);
 					System.out.println(ticket + ": Ticket from readFromFile function");
 					ticketList.add(ticket);
-
+                    }
+                    catch (IndexOutOfBoundsException a) {
+                        Alerts.showAlert("Erro na leitura", "Formato de arquivo incorreto", "Verifique o .CSV", AlertType.ERROR);
+					}
+                    
 				}
 			} else {
 				while ((line = br.readLine()) != null) {
 					String[] data = (line.split(","));
+					try {
 
-					String tNum = data[0].toString();
-					String assignedTo = data[1].toString();
-					String assignment_group = data[2].toString();
-					String status = data[3].toString();
-					Date created = sdf.parse(data[4].toString());
-					Date updated = sdf.parse(data[5].toString());
+						String tNum = data[0].toString();
+						String assignedTo = data[1].toString();
+						String assignment_group = data[2].toString();
+						String status = data[3].toString();
+						Date created = sdf.parse(data[4].toString());
+						Date updated = sdf.parse(data[5].toString());
 
-					Ticket ticket = new Ticket(tNum, assignedTo, assignment_group, status, created, updated);
-					System.out.println(ticket + ": Ticket from readFromFile - no replace function");
-					ticketList.add(ticket);
-
+						Ticket ticket = new Ticket(tNum, assignedTo, assignment_group, status, created, updated);
+						System.out.println(ticket + ": Ticket from readFromFile - no replace function");
+						ticketList.add(ticket);
+					} catch (IndexOutOfBoundsException a) {
+                         Alerts.showAlert("Erro na leitura", "Formato de arquivo incorreto", "Verifique o .CSV", AlertType.ERROR);
+					}
 				}
+
 			}
 
 		} catch (IOException | ParseException e) {

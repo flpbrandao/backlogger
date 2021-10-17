@@ -15,7 +15,7 @@ import javafx.scene.control.Alert.AlertType;
 
 public class CreateExcelFile {
 
-	SimpleDateFormat todayDate = new SimpleDateFormat("dd-MM-yyyy");
+	public SimpleDateFormat todayDate = new SimpleDateFormat("dd-MM-yyyy");
 
 	public static void main(String[] args) {
 

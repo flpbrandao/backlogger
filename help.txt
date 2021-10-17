@@ -18,3 +18,8 @@ Complemento da função anterior - Em muitos casos na operação, temos tickets 
 Esta função compara relatórios de backlog gerados pelo programa em dois dias distintos e identifica se algum ticket não foi tratado em tempo hábil e entrou para o próximo report.
 
 Por exemplo: Foi gerado um relatório na segunda com 3 tickets. Na quinta feira geralmente é emitido um novo relatório, e o programa pode verificar se algum dos 3 tickets da segunda ainda está presente no relatório da quinta, o que configura maior urgência na resolução.
+
+ADD NA SEÇÃO CERTA: Se, na tabela de resultados, um ticket sai apenas com o número e datas, e os outros campos em branco, o que significa?
+
+a. Ticket estava na lista de tickets a serem removidos, mas foi fechado, então não aparece mais no Servicenow.
+b. Ticket estava na lista de tickets a serem removidos, mas não tem ainda mais que 5 dias de idade, por isso não aparece no report do Servicenow.

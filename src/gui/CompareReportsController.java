@@ -15,13 +15,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import services.CreateExcelFile;
 
 public class CompareReportsController implements Initializable {
 
@@ -30,6 +31,7 @@ public class CompareReportsController implements Initializable {
 	List<Ticket> ultimateList = new ArrayList<>();
 	FileChooser fc2 = new FileChooser();
 	private ObservableList<Ticket> obsList;
+	CreateExcelFile c1 = new CreateExcelFile();
 
 	GenerateReports2Controller gn = new GenerateReports2Controller();
 
@@ -87,9 +89,10 @@ public class CompareReportsController implements Initializable {
 					AlertType.INFORMATION);
 		} else {
 			Alerts.showAlert("Informação",
-					"Foram encontrados" + ultimateList.size() + " tickets pendentes do último report.",
+					"Foram encontrados " + ultimateList.size() + " tickets pendentes do último report.",
 					"Relatório pronto para exportação", AlertType.WARNING);
 			tableView.setItems(obsList);
+			c1.createExcelFile(".\\data\\Tickets_nao_tratados.xlsx",(new Date()), ultimateList);
 		}
 
 	}

@@ -180,6 +180,7 @@ public class GenerateReports2Controller implements Initializable {
 
 	public List<Ticket> compareLists(List<Ticket> ticketList, Boolean comparison) {
 		Set<Ticket> s = new HashSet<>();
+		List<Ticket> excludeFromList = new ArrayList<>();
 
 		for (Ticket t : ticketList) {
 			if (s.add(t) == false) {
@@ -189,6 +190,13 @@ public class GenerateReports2Controller implements Initializable {
 					finalList.add(t);
 				}
 
+			} else {
+				if (t.getAssigned_to() == null) {
+					s.remove(t);
+					excludeFromList.add(t);
+					createFile(excludeFromList, outputPath + "verify.csv", end = false);
+
+				}
 			}
 
 		}
@@ -196,6 +204,12 @@ public class GenerateReports2Controller implements Initializable {
 			for (Ticket t : s) {
 				finalList.add(t);
 			}
+		}
+		if (excludeFromList.size() > 0) {
+		Alerts.showAlert("Informação", "Tickets ausentes no report", "Existem " + excludeFromList.size()
+				+ " tickets que estão no relatório a ser excluído mas não estão no report. Isto pode significar que o ticket foi "
+				+ "fechado ou tem menos de 5 dias. Um arquivo foi criado para verificação, na pasta 'data' com o final 'verify",
+				AlertType.INFORMATION);
 		}
 		return finalList;
 
@@ -231,24 +245,23 @@ public class GenerateReports2Controller implements Initializable {
 			if (compare == false) {
 
 				while ((line = br.readLine()) != null) {
-                    try {
-					String[] data = (line.split(","));
+					try {
+						String[] data = (line.split(","));
 
-					String tNum = data[0].toString().replace("\"", "");
-					String assignedTo = data[1].toString().replace("\"", "");
-					String assignment_group = data[2].toString().replace("\"", "");
-					String status = data[3].toString().replace("\"", "");
-					Date created = sdf.parse(data[4].toString().replace("\"", ""));
-					Date updated = sdf.parse(data[5].toString().replace("\"", ""));
+						String tNum = data[0].toString().replace("\"", "");
+						String assignedTo = data[1].toString().replace("\"", "");
+						String assignment_group = data[2].toString().replace("\"", "");
+						String status = data[3].toString().replace("\"", "");
+						Date created = sdf.parse(data[4].toString().replace("\"", ""));
+						Date updated = sdf.parse(data[5].toString().replace("\"", ""));
 
-					Ticket ticket = new Ticket(tNum, assignedTo, assignment_group, status, created, updated);
-					System.out.println(ticket + ": Ticket from readFromFile function");
-					ticketList.add(ticket);
-                    }
-                    catch (IndexOutOfBoundsException a) {
-                        Alerts.showAlert("Erro", "Formato de arquivo incorreto", "Verifique o .CSV", AlertType.ERROR);
+						Ticket ticket = new Ticket(tNum, assignedTo, assignment_group, status, created, updated);
+						System.out.println(ticket + ": Ticket from readFromFile function");
+						ticketList.add(ticket);
+					} catch (IndexOutOfBoundsException a) {
+						Alerts.showAlert("Erro", "Formato de arquivo incorreto", "Verifique o .CSV", AlertType.ERROR);
 					}
-                    
+
 				}
 			} else {
 				while ((line = br.readLine()) != null) {
@@ -266,7 +279,7 @@ public class GenerateReports2Controller implements Initializable {
 						System.out.println(ticket + ": Ticket from readFromFile - no replace function");
 						ticketList.add(ticket);
 					} catch (IndexOutOfBoundsException a) {
-                         Alerts.showAlert("Erro", "Formato de arquivo incorreto", "Verifique o .CSV", AlertType.ERROR);
+						Alerts.showAlert("Erro", "Formato de arquivo incorreto", "Verifique o .CSV", AlertType.ERROR);
 					}
 				}
 

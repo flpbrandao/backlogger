@@ -116,6 +116,7 @@ public class GenerateReports2Controller implements Initializable {
 			ticketList = readFromFile(inputPath, false);
 			createFile(ticketList, outputPath, end = false);
 			buttonClicked = true;
+			Alerts.showAlert("Arquivo de entrada lido", "Leitura feita com sucesso.", inputPath, AlertType.INFORMATION);
 
 		} else {
 			Alerts.showAlert("Invalid file", "Seleção incorreta", "Selecione um arquivo válido!", AlertType.ERROR);
@@ -147,6 +148,7 @@ public class GenerateReports2Controller implements Initializable {
 		createFile(ticketList, outputPath, end = false);
 		buttonClicked2 = true;
 		chkExclude.setDisable(true);
+		Alerts.showAlert("Leitura feita", "Arquivos lidos", "Os arquivos a serem excluídos foram lidos." , AlertType.INFORMATION);
 	}
 
 	@FXML
@@ -181,6 +183,7 @@ public class GenerateReports2Controller implements Initializable {
 
 		for (Ticket t : ticketList) {
 			if (s.add(t) == false) {
+				s.remove(t);
 				System.out.println(t.getNumber() + " is duplicated - removing from HashSet and list");
 				if (comparison == true) {
 					finalList.add(t);
@@ -204,6 +207,8 @@ public class GenerateReports2Controller implements Initializable {
 		}
 
 		try (BufferedWriter bw = new BufferedWriter(new FileWriter(outputPath))) {
+			bw.write("BASELINE -Não apagar");
+			bw.newLine();
 			for (Ticket t : ticketList) {
 				bw.write(t.getNumber() + "," + t.getAssigned_to() + "," + t.getAssignment_group() + "," + t.getStatus()
 						+ "," + sdf.format(t.getCreatedOn()) + "," + sdf.format(t.getUpdatedOn()));

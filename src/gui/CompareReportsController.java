@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 
 import entities.Ticket;
+import gui.util.Alerts;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -17,11 +18,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
-public class CompareReportsController implements Initializable{
+public class CompareReportsController implements Initializable {
 
 	List<Ticket> tempList = new ArrayList<>();
 	List<Ticket> finaltempList = new ArrayList<>();
@@ -30,10 +32,10 @@ public class CompareReportsController implements Initializable{
 	private ObservableList<Ticket> obsList;
 
 	GenerateReports2Controller gn = new GenerateReports2Controller();
-	
+
 	@FXML
 	private TableView<Ticket> tableView;
-	
+
 	@FXML
 	private TableColumn<Ticket, String> tableColumnNumber;
 
@@ -51,7 +53,6 @@ public class CompareReportsController implements Initializable{
 
 	@FXML
 	private TableColumn<Ticket, Date> tableColumnUpdatedOn;
-
 
 	@FXML
 	private Button btPreviousBacklog;
@@ -81,15 +82,22 @@ public class CompareReportsController implements Initializable{
 
 		}
 		obsList = FXCollections.observableArrayList(ultimateList);
-		tableView.setItems(obsList);
-		
-	}
+		if (ultimateList.size() == 0) {
+			Alerts.showAlert("Informação", "Não foram encontrados tickets pendentes do último report.,", null,
+					AlertType.INFORMATION);
+		} else {
+			Alerts.showAlert("Informação",
+					"Foram encontrados" + ultimateList.size() + " tickets pendentes do último report.",
+					"Relatório pronto para exportação", AlertType.WARNING);
+			tableView.setItems(obsList);
+		}
 
+	}
 
 	@Override
 	public void initialize(URL url, ResourceBundle rg) {
 		initTV();
-		
+
 	}
 
 	private void initTV() {
@@ -99,8 +107,7 @@ public class CompareReportsController implements Initializable{
 		tableColumnStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
 		tableColumnCreatedOn.setCellValueFactory(new PropertyValueFactory<>("createdOn"));
 		tableColumnUpdatedOn.setCellValueFactory(new PropertyValueFactory<>("updatedOn"));
-		
+
 	}
 
-	
 }

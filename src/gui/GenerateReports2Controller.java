@@ -115,10 +115,10 @@ public class GenerateReports2Controller implements Initializable {
 			ticketList = readFromFile(inputPath, false);
 			createFile(ticketList, outputPath, end = false);
 			buttonClicked = true;
-			Alerts.showAlert("Arquivo de entrada lido", "Leitura feita com sucesso.", inputPath, AlertType.INFORMATION);
+			Alerts.showAlert("Informação", "Leitura feita com sucesso.", inputPath, AlertType.INFORMATION);
 
 		} else {
-			Alerts.showAlert("Invalid file", "Seleção incorreta", "Selecione um arquivo válido!", AlertType.ERROR);
+			Alerts.showAlert("Erro", "Seleção incorreta", "Selecione um arquivo válido!", AlertType.ERROR);
 		}
 
 	}
@@ -147,7 +147,7 @@ public class GenerateReports2Controller implements Initializable {
 		createFile(ticketList, outputPath, end = false);
 		buttonClicked2 = true;
 		chkExclude.setDisable(true);
-		Alerts.showAlert("Leitura feita", "Arquivos lidos", "Os arquivos a serem excluídos foram lidos.",
+		Alerts.showAlert("Informação", "Arquivos lidos", "Os arquivos a serem excluídos foram lidos.",
 				AlertType.INFORMATION);
 	}
 
@@ -246,7 +246,7 @@ public class GenerateReports2Controller implements Initializable {
 					ticketList.add(ticket);
                     }
                     catch (IndexOutOfBoundsException a) {
-                        Alerts.showAlert("Erro na leitura", "Formato de arquivo incorreto", "Verifique o .CSV", AlertType.ERROR);
+                        Alerts.showAlert("Erro", "Formato de arquivo incorreto", "Verifique o .CSV", AlertType.ERROR);
 					}
                     
 				}
@@ -266,7 +266,7 @@ public class GenerateReports2Controller implements Initializable {
 						System.out.println(ticket + ": Ticket from readFromFile - no replace function");
 						ticketList.add(ticket);
 					} catch (IndexOutOfBoundsException a) {
-                         Alerts.showAlert("Erro na leitura", "Formato de arquivo incorreto", "Verifique o .CSV", AlertType.ERROR);
+                         Alerts.showAlert("Erro", "Formato de arquivo incorreto", "Verifique o .CSV", AlertType.ERROR);
 					}
 				}
 
@@ -306,7 +306,7 @@ public class GenerateReports2Controller implements Initializable {
 
 		} catch (IOException e) {
 
-			Alerts.showAlert("Erro", "Arquivo não encontrado ou tipo incorreto :(", "Favor verificar o arquivo",
+			Alerts.showAlert("Erro", "Arquivo não encontrado ou tipo incorreto ", "Favor verificar o arquivo",
 					AlertType.ERROR);
 
 		} finally {

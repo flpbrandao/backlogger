@@ -1,0 +1,20 @@
+-----------------------AJUDA-------------------------------
+
+----------- O QUE O PROGRAMA FAZ?
+
+O programa Backlogger tem as seguintes funções:
+
+1. Gerar um relatório de backlog a partir do report do servicenow (CSV).
+
+O ServiceNOW já gera o arquivo em formato .xlsx, então esta função é dispensável caso não se tenham tickets a serem excluídos da lista.
+
+
+2. Gerar um relatório de backlog removendo tickets que estão aguardando procedimentos externos.
+
+Complemento da função anterior - Em muitos casos na operação, temos tickets em espera de fornecedores ou equipes externas, e esses tickets não devem ser inclusos no relatório de backlog pois não tem resolução pelos times, necessitando ficar em awaiting. A retirada desses tickets do relatório de backlog facilita a visualização do que realmente está pendente.
+
+3. Comparar os relatórios de backlog emitidos.
+
+Esta função compara relatórios de backlog gerados pelo programa em dois dias distintos e identifica se algum ticket não foi tratado em tempo hábil e entrou para o próximo report.
+
+Por exemplo: Foi gerado um relatório na segunda com 3 tickets. Na quinta feira geralmente é emitido um novo relatório, e o programa pode verificar se algum dos 3 tickets da segunda ainda está presente no relatório da quinta, o que configura maior urgência na resolução.

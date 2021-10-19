@@ -116,6 +116,7 @@ public class GenerateReports2Controller implements Initializable {
 			buttonClicked = true;
 			Alerts.showAlert("Informação", "Leitura feita com sucesso.", inputPath, AlertType.INFORMATION);
 			buttonClicked = true;
+			btFileChooser.setDisable(true);
 
 		} else {
 			Alerts.showAlert("Erro", "Seleção incorreta", "Selecione um arquivo válido!", AlertType.ERROR);
@@ -137,7 +138,7 @@ public class GenerateReports2Controller implements Initializable {
 		buttonClicked = false;
 		ticketList.clear();
 		finalList.clear();
-		
+		btExclude.setDisable(false);
 	}
 
 	@FXML
@@ -154,6 +155,7 @@ public class GenerateReports2Controller implements Initializable {
 			buttonClicked2 = true;
 			Alerts.showAlert("Informação", "Arquivos lidos", "Os arquivos a serem excluídos foram lidos.",
 					AlertType.INFORMATION);
+			btExclude.setDisable(true);
 		} else {
 			Alerts.showAlert("Erro", "Favor selecionar um arquivo válido.", null, AlertType.WARNING);
 		}

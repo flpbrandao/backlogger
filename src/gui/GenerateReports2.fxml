@@ -26,11 +26,11 @@
                </columnResizePolicy>
             </TableView>
             <Button fx:id="btGenerate" layoutX="211.0" layoutY="130.0" mnemonicParsing="false" onAction="#onBtGenerateAction" prefHeight="30.0" prefWidth="125.0" text="Gerar report" />
-            <Button fx:id="btClean" layoutX="106.0" layoutY="517.0" mnemonicParsing="false" onAction="#onBtCleanAction" prefHeight="48.0" prefWidth="148.0" text="Clean">
+            <Button fx:id="btClean" layoutX="106.0" layoutY="517.0" mnemonicParsing="false" onAction="#onBtCleanAction" prefHeight="48.0" prefWidth="148.0" text="Limpar">
                <font>
                   <Font name="Calibri" size="13.0" />
                </font></Button>
-            <Button fx:id="btExport" layoutX="310.0" layoutY="517.0" mnemonicParsing="false" onAction="#onBtExportAction" prefHeight="48.0" prefWidth="148.0" text="Export" textFill="#1b1ec3">
+            <Button fx:id="btExport" layoutX="310.0" layoutY="517.0" mnemonicParsing="false" onAction="#onBtExportAction" prefHeight="48.0" prefWidth="148.0" text="Exportar (Excel)" textFill="#1b1ec3">
                <font>
                   <Font name="Calibri" size="13.0" />
                </font></Button>

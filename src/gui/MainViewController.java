@@ -1,5 +1,6 @@
 package gui;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -12,6 +13,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
@@ -20,6 +23,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class MainViewController implements Initializable {
+	
+	@FXML
+	private ImageView imgView;
 
 	@FXML
 	private MenuItem menuItemMain;
@@ -47,7 +53,9 @@ public class MainViewController implements Initializable {
 
 	@Override
 	public void initialize(URL uri, ResourceBundle rg) {
-
+		File file = new File("./img/logo.jpg");
+        Image image = new Image(file.toURI().toString());
+        imgView.setImage(image);
 	}
 
 	public void createDialogForm(String absoluteName) { // Precisa de ajuste para ficar no mesmo Stage

@@ -5,7 +5,7 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.image.Image?>
+<?import javafx.scene.effect.Blend?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.VBox?>
 
@@ -28,13 +28,13 @@
                   </Menu>
               </menus>
             </MenuBar>
-            <ImageView fitHeight="515.0" fitWidth="591.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../../Users/flpbr/Desktop/veja-como-resolver-problemas-com-o-java-no-pc.jpg" />
-               </image>
+            <ImageView fx:id="imgView" fitHeight="293.0" fitWidth="546.0" pickOnBounds="true" preserveRatio="true">
                <VBox.margin>
-                  <Insets top="130.0" />
+                  <Insets left="20.0" top="130.0" />
                </VBox.margin>
+               <effect>
+                  <Blend />
+               </effect>
             </ImageView>
          </children>
       </VBox>

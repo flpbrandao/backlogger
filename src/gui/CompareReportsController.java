@@ -94,6 +94,8 @@ public class CompareReportsController implements Initializable {
 					"Relatório pronto para exportação", AlertType.WARNING);
 			tableView.setItems(obsList);
 			c1.createExcelFile(".\\data\\Tickets_nao_tratados.xlsx",(new Date()), ultimateList);
+			tempList.clear();
+			ultimateList.clear();
 		}
 		
 

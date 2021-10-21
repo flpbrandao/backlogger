@@ -71,6 +71,7 @@ public class CompareReportsController implements Initializable {
 			for (int i = 0; i < selectedFiles.size(); i++) {
 				System.out.println(selectedFiles.get(i));
 				tempList = gn.readFromFile(String.valueOf(selectedFiles.get(i)), false);
+			}
 				for (Ticket t : tempList) {
 					if (hs.add(t) == false) {
 						if (ultimateList.contains(t) == false) {
@@ -79,7 +80,7 @@ public class CompareReportsController implements Initializable {
 							;
 						}
 					}
-				}
+				
 			}
 
 		}

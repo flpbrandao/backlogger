@@ -6,61 +6,33 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/temp/javafx-sdk/javafx-sdk-11.0.2/lib/javafx.base.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/temp/javafx-sdk/javafx-sdk-11.0.2/lib/javafx.controls.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/temp/javafx-sdk/javafx-sdk-11.0.2/lib/javafx.fxml.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/temp/javafx-sdk/javafx-sdk-11.0.2/lib/javafx.graphics.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/temp/javafx-sdk/javafx-sdk-11.0.2/lib/javafx.media.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/temp/javafx-sdk/javafx-sdk-11.0.2/lib/javafx.swing.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/temp/javafx-sdk/javafx-sdk-11.0.2/lib/javafx.web.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/temp/javafx-sdk/javafx-sdk-11.0.2/lib/javafx-swt.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/temp/poi-bin-5.0.0-20210120/poi-5.0.0/poi-5.0.0.jar"/>
-	<classpathentry kind="lib" path="C:/temp/poi-bin-5.0.0-20210120/poi-5.0.0/poi-examples-5.0.0.jar"/>
-	<classpathentry kind="lib" path="C:/temp/poi-bin-5.0.0-20210120/poi-5.0.0/poi-excelant-5.0.0.jar"/>
-	<classpathentry kind="lib" path="C:/temp/poi-bin-5.0.0-20210120/poi-5.0.0/poi-integration-5.0.0.jar"/>
-	<classpathentry kind="lib" path="C:/temp/poi-bin-5.0.0-20210120/poi-5.0.0/poi-ooxml-5.0.0.jar"/>
-	<classpathentry kind="lib" path="C:/temp/poi-bin-5.0.0-20210120/poi-5.0.0/poi-ooxml-full-5.0.0.jar"/>
-	<classpathentry kind="lib" path="C:/temp/poi-bin-5.0.0-20210120/poi-5.0.0/poi-ooxml-lite-5.0.0.jar"/>
-	<classpathentry kind="lib" path="C:/temp/poi-bin-5.0.0-20210120/poi-5.0.0/poi-scratchpad-5.0.0.jar"/>
-	<classpathentry kind="lib" path="C:/temp/poi-bin-5.0.0-20210120/poi-5.0.0/ooxml-lib/commons-compress-1.20.jar"/>
-	<classpathentry kind="lib" path="C:/temp/poi-bin-5.0.0-20210120/poi-5.0.0/ooxml-lib/curvesapi-1.06.jar"/>
-	<classpathentry kind="lib" path="C:/temp/poi-bin-5.0.0-20210120/poi-5.0.0/ooxml-lib/xmlbeans-4.0.0.jar"/>
-	<classpathentry kind="lib" path="C:/temp/poi-bin-5.0.0-20210120/poi-5.0.0/lib/commons-codec-1.15.jar"/>
-	<classpathentry kind="lib" path="C:/temp/poi-bin-5.0.0-20210120/poi-5.0.0/lib/commons-collections4-4.4.jar"/>
-	<classpathentry kind="lib" path="C:/temp/poi-bin-5.0.0-20210120/poi-5.0.0/lib/commons-math3-3.6.1.jar"/>
-	<classpathentry kind="lib" path="C:/temp/poi-bin-5.0.0-20210120/poi-5.0.0/lib/SparseBitSet-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/java-libs/javafx-sdk-17.0.1/lib/javafx.base.jar"/>
+	<classpathentry kind="lib" path="C:/java-libs/javafx-sdk-17.0.1/lib/javafx.controls.jar"/>
+	<classpathentry kind="lib" path="C:/java-libs/javafx-sdk-17.0.1/lib/javafx.fxml.jar"/>
+	<classpathentry kind="lib" path="C:/java-libs/javafx-sdk-17.0.1/lib/javafx.graphics.jar"/>
+	<classpathentry kind="lib" path="C:/java-libs/javafx-sdk-17.0.1/lib/javafx.media.jar"/>
+	<classpathentry kind="lib" path="C:/java-libs/javafx-sdk-17.0.1/lib/javafx.swing.jar"/>
+	<classpathentry kind="lib" path="C:/java-libs/javafx-sdk-17.0.1/lib/javafx.web.jar"/>
+	<classpathentry kind="lib" path="C:/java-libs/javafx-sdk-17.0.1/lib/javafx-swt.jar"/>
+	<classpathentry kind="lib" path="C:/java-libs/poi-bin-5.1.0-20211024/lib/commons-codec-1.15.jar"/>
+	<classpathentry kind="lib" path="C:/java-libs/poi-bin-5.1.0-20211024/lib/commons-collections4-4.4.jar"/>
+	<classpathentry kind="lib" path="C:/java-libs/poi-bin-5.1.0-20211024/lib/commons-io-2.11.0.jar"/>
+	<classpathentry kind="lib" path="C:/java-libs/poi-bin-5.1.0-20211024/lib/commons-math3-3.6.1.jar"/>
+	<classpathentry kind="lib" path="C:/java-libs/poi-bin-5.1.0-20211024/lib/log4j-api-2.14.1.jar"/>
+	<classpathentry kind="lib" path="C:/java-libs/poi-bin-5.1.0-20211024/lib/SparseBitSet-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/java-libs/poi-bin-5.1.0-20211024/poi-5.1.0.jar"/>
+	<classpathentry kind="lib" path="C:/java-libs/poi-bin-5.1.0-20211024/poi-examples-5.1.0.jar"/>
+	<classpathentry kind="lib" path="C:/java-libs/poi-bin-5.1.0-20211024/poi-excelant-5.1.0.jar"/>
+	<classpathentry kind="lib" path="C:/java-libs/poi-bin-5.1.0-20211024/poi-javadoc-5.1.0.jar"/>
+	<classpathentry kind="lib" path="C:/java-libs/poi-bin-5.1.0-20211024/poi-ooxml-5.1.0.jar"/>
+	<classpathentry kind="lib" path="C:/java-libs/poi-bin-5.1.0-20211024/poi-ooxml-full-5.1.0.jar"/>
+	<classpathentry kind="lib" path="C:/java-libs/poi-bin-5.1.0-20211024/poi-ooxml-lite-5.1.0.jar"/>
+	<classpathentry kind="lib" path="C:/java-libs/poi-bin-5.1.0-20211024/poi-scratchpad-5.1.0.jar"/>
+	<classpathentry kind="lib" path="C:/java-libs/poi-bin-5.1.0-20211024/ooxml-lib/commons-compress-1.21.jar"/>
+	<classpathentry kind="lib" path="C:/java-libs/poi-bin-5.1.0-20211024/ooxml-lib/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/java-libs/poi-bin-5.1.0-20211024/ooxml-lib/curvesapi-1.06.jar"/>
+	<classpathentry kind="lib" path="C:/java-libs/poi-bin-5.1.0-20211024/ooxml-lib/slf4j-api-1.7.32.jar"/>
+	<classpathentry kind="lib" path="C:/java-libs/poi-bin-5.1.0-20211024/ooxml-lib/xmlbeans-5.0.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -45,6 +45,7 @@ public class GenerateReports2Controller implements Initializable {
 	String todayDateString = todayDate.format(new Date());
 	String outputPath = ".\\data\\" + todayDateString;
 	FileChooser fc = new FileChooser();
+	String lastPath="C:";
 
 	private ObservableList<Ticket> obsList;
 
@@ -106,6 +107,7 @@ public class GenerateReports2Controller implements Initializable {
 	private void onBtFileChooserAction() {
 
 		fc.getExtensionFilters().addAll(new ExtensionFilter("CSV Files", "*.csv"));
+		fc.setInitialDirectory(new File("C:"));
 		File selectedFile = fc.showOpenDialog(null);
 		if (selectedFile != null) {
 
@@ -117,6 +119,7 @@ public class GenerateReports2Controller implements Initializable {
 			Alerts.showAlert("Informação", "Leitura feita com sucesso.", inputPath, AlertType.INFORMATION);
 			buttonClicked = true;
 			btFileChooser.setDisable(true);
+			lastPath = selectedFile.getParent();
 
 		} else {
 			Alerts.showAlert("Erro", "Seleção incorreta", "Selecione um arquivo válido!", AlertType.ERROR);
@@ -145,6 +148,7 @@ public class GenerateReports2Controller implements Initializable {
 	private void onchkExcludeAction() {
 
 		FileChooser fc2 = new FileChooser();
+		fc2.setInitialDirectory(new File(lastPath));
 //		fc.getExtensionFilters().addAll(new ExtensionFilter("CSV Files", "*.csv"));
 		File selectedFile = fc2.showOpenDialog(null);
 		if (selectedFile != null) {

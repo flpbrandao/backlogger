@@ -53,7 +53,7 @@ public class MainViewController implements Initializable {
 
 	@Override
 	public void initialize(URL uri, ResourceBundle rg) {
-		File file = new File("./img/logo.jpg");
+		File file = new File("./img/logo.png");
         Image image = new Image(file.toURI().toString());
         imgView.setImage(image);
 	}

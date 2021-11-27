@@ -61,8 +61,7 @@ public class CreateExcelFile {
 			fileOut.close();
 			workbook.close();
 			
-			Alerts.showAlert("Success", "Arquivo gerado", "Seu arquivo foi gerado com sucesso em " + path, AlertType.INFORMATION);
-		} catch (Exception e) {
+			} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

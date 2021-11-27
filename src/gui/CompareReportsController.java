@@ -91,7 +91,7 @@ public class CompareReportsController implements Initializable {
 		} else {
 			Alerts.showAlert("Informação",
 					"Foram encontrados " + ultimateList.size() + " tickets pendentes do último report.",
-					"Relatório pronto para exportação", AlertType.WARNING);
+					"Relatório exportado como Tickets_nao_tratados.xlsx", AlertType.WARNING);
 			tableView.setItems(obsList);
 			c1.createExcelFile(".\\data\\Tickets_nao_tratados.xlsx",(new Date()), ultimateList);
 			tempList.clear();

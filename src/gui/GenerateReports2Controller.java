@@ -45,7 +45,7 @@ public class GenerateReports2Controller implements Initializable {
 	String todayDateString = todayDate.format(new Date());
 	String outputPath = ".\\data\\" + todayDateString;
 	FileChooser fc = new FileChooser();
-	String lastPath="C:";
+	String lastPath = "C:";
 
 	private ObservableList<Ticket> obsList;
 
@@ -114,7 +114,7 @@ public class GenerateReports2Controller implements Initializable {
 			txtArea.setText(selectedFile.getAbsolutePath());
 			String inputPath = selectedFile.getAbsolutePath();
 			ticketList = readFromFile(inputPath, false);
-			createFile(ticketList, outputPath, end = false);
+			//createFile(ticketList, outputPath, end = false);
 			buttonClicked = true;
 			Alerts.showAlert("Informação", "Leitura feita com sucesso.", inputPath, AlertType.INFORMATION);
 			buttonClicked = true;
@@ -155,7 +155,7 @@ public class GenerateReports2Controller implements Initializable {
 			txtArea1.setText(selectedFile.getAbsolutePath());
 			ticketList = readFromRawTickets(selectedFile.getAbsolutePath());
 
-			createFile(ticketList, outputPath, end = false);
+			//createFile(ticketList, outputPath, end = false);
 			buttonClicked2 = true;
 			Alerts.showAlert("Informação", "Arquivos lidos", "Os arquivos a serem excluídos foram lidos.",
 					AlertType.INFORMATION);
@@ -193,7 +193,6 @@ public class GenerateReports2Controller implements Initializable {
 
 	public List<Ticket> compareLists(List<Ticket> ticketList, Boolean comparison) {
 		Set<Ticket> s = new HashSet<>();
-		List<Ticket> excludeFromList = new ArrayList<>();
 
 		for (Ticket t : ticketList) {
 			if (s.add(t) == false) {
@@ -206,8 +205,6 @@ public class GenerateReports2Controller implements Initializable {
 			} else {
 				if (t.getAssigned_to() == null) {
 					s.remove(t);
-					excludeFromList.add(t);
-					createFile(excludeFromList, outputPath + "verify.csv", end = false);
 
 				}
 			}
@@ -218,19 +215,14 @@ public class GenerateReports2Controller implements Initializable {
 				finalList.add(t);
 			}
 		}
-		if (excludeFromList.size() > 0) {
-			Alerts.showAlert("Informação", "Tickets ausentes no report", "Existem " + excludeFromList.size()
-					+ " tickets que estão no relatório a ser excluído mas não estão no report. Isto pode significar que o ticket foi "
-					+ "fechado ou tem menos de 5 dias. Um arquivo foi criado para verificação, na pasta 'data' com o final 'verify",
-					AlertType.INFORMATION);
-		}
+
 		return finalList;
 
 	}
 
 	public void createFile(List<Ticket> ticketList, String outputPath, Boolean end) {
 		if (end == true) {
-			outputPath = outputPath + "-final-csv-report.csv";
+			outputPath = ".\\data\\csv-comparison-reports\\final-csv-report-" + todayDateString + ".csv";
 		}
 
 		try (BufferedWriter bw = new BufferedWriter(new FileWriter(outputPath))) {
@@ -277,7 +269,8 @@ public class GenerateReports2Controller implements Initializable {
 
 				}
 			} else {
-				while ((line = br.readLine()) != null) {
+				while ((line = br.readLine()) != null) { // This function doesnt replace commas because it fetches data
+															// directly from CSV files, which is already without commas
 					String[] data = (line.split(","));
 					try {
 

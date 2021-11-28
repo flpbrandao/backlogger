@@ -65,7 +65,7 @@ public class CompareReportsController implements Initializable {
 		Set<Ticket> hs = new HashSet<>();
 
 		fc2.getExtensionFilters().addAll(new ExtensionFilter("CSV Files", "*.csv"));
-		fc2.setInitialDirectory(new File(".\\data"));
+		fc2.setInitialDirectory(new File(".\\data\\csv-comparison-reports"));
 		List<File> selectedFiles = fc2.showOpenMultipleDialog(null);
 		if (selectedFiles != null) {
 			for (int i = 0; i < selectedFiles.size(); i++) {

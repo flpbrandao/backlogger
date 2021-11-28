@@ -9,9 +9,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import entities.Ticket;
-import gui.util.Alerts;
-import javafx.scene.control.Alert.AlertType;
+import entities.Ticket;	
 
 public class CreateExcelFile {
 
@@ -25,7 +23,7 @@ public class CreateExcelFile {
 		
 		try {
 			// declare file name to be create
-			String filename = path + "-FINAL REPORT.xlsx";
+			String filename = path + "-FINAL EXCEL REPORT.xlsx";
 			// creating an instance of XSSFWorkbook class
 			XSSFWorkbook workbook = new XSSFWorkbook();
 			// invoking creatSheet() method and passing the name of the sheet to be created
